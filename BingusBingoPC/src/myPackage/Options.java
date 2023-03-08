@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Options
 {
@@ -64,21 +65,25 @@ public class Options
 			"Defeat Elden Beast", 
 			"Enter Mohgwyn Palace",
 			"Teleport to Faram Azula from the 4 Belfries", 
-			"Defeat Malenia", 
-			"Enter the consecrated snowfield", 
-			"Enter Elphael Brace of the Haligtree", 					
-			"Defeat the boss in Malenia's Arena", 						
+			"Defeat Malenia", 						
 			"Defeat the boss in Dragonlord Placidusax's Arena", 
-			"Invert the Carian Study Hall", 
 			"Equip 3 spells or incantations simultaneously", 
-			"Embrace the 3 Fingers", 
 			"Burn the thorns from the Erdtree"};
+	private String[] nightmareChallenges = new String[] {
+			"Embrace the 3 Fingers", 
+			"Enter Elphael Brace of the Haligtree", 					
+			"Defeat the boss in Malenia's Arena", 
+			"Invert the Carian Study Hall", 
+			"Enter the consecrated snowfield",  
+	};
 	
 	//Status fields
 	private boolean easyOn;
 	private boolean medOn;
 	private boolean hardOn;
+	private boolean nightmareOn;
 	private boolean customOn;
+	private boolean nightmareCheck;
 	private long userSeed;
 	
 	//JFrame element declarations
@@ -90,6 +95,7 @@ public class Options
 	private JRadioButton easyToggle;
 	private JRadioButton medToggle;
 	private JRadioButton hardToggle;
+	private JRadioButton nightmareToggle;
 	private JRadioButton customToggle;
 	private JLabel chalTally;
 	
@@ -121,11 +127,14 @@ public class Options
 		easyOn = false;
 		medOn = false;
 		hardOn = false;
+		nightmareOn = false;
 		customOn = false;
+		nightmareCheck = false;
+		
 		
 		//OPTIONS frame
 		optionsFrame = new JFrame();
-		optionsFrame.setSize(800,200);
+		optionsFrame.setSize(800,220);
 		optionsFrame.setLocation(100,100);
 		optionsFrame.setVisible(true);
 		optionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -145,8 +154,9 @@ public class Options
 		easyToggle = new JRadioButton("Enable Easy Challenges");
 		medToggle = new JRadioButton("Enable Med Challenges");
 		hardToggle = new JRadioButton("Enable Hard Challenges");
+		nightmareToggle = new JRadioButton("ENABLE NIGHTMARES");
 		customToggle = new JRadioButton("Enable Custom Challenges");
-		chalTally = new JLabel("(Enabled Challenges: " + posChals.size() + ")");
+		chalTally = new JLabel("(Challenges Enabled: " + posChals.size() + ")");
 		GroupLayout toggleLayout = new GroupLayout(optionsTogglePanel);
 		optionsTogglePanel.setLayout(toggleLayout);
 		toggleLayout.setAutoCreateGaps(true);
@@ -158,6 +168,7 @@ public class Options
 							.addComponent(medToggle)
 							.addComponent(hardToggle)
 							.addComponent(customToggle)
+							.addComponent(nightmareToggle)
 							.addComponent(chalTally))
 		);
 		toggleLayout.setVerticalGroup(
@@ -166,6 +177,8 @@ public class Options
 					.addComponent(medToggle)
 					.addComponent(hardToggle)
 					.addComponent(customToggle)
+					.addComponent(nightmareToggle)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(chalTally)
 		);
 		
@@ -181,7 +194,7 @@ public class Options
 					}
 					easyOn = true;
 					optionsSeedMessage.setText("Enabled " + easyChallenges.length + " easy challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -193,7 +206,7 @@ public class Options
 					}
 					easyOn = false;
 					optionsSeedMessage.setText("Disabled " + easyChallenges.length + " easy challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -211,7 +224,7 @@ public class Options
 					}
 					medOn = true;
 					optionsSeedMessage.setText("Enabled " + medChallenges.length + " medium challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -223,7 +236,7 @@ public class Options
 					}
 					medOn = false;
 					optionsSeedMessage.setText("Disabled " + medChallenges.length + " medium challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -241,7 +254,7 @@ public class Options
 					}
 					hardOn = true;
 					optionsSeedMessage.setText("Enabled " + hardChallenges.length + " hard challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("hardOn set to: " + hardOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -253,7 +266,7 @@ public class Options
 					}
 					hardOn = false;
 					optionsSeedMessage.setText("Disabled " + hardChallenges.length + " hard challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("hardOn set to: " + hardOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -268,7 +281,7 @@ public class Options
 					posChals.addAll(customChallenges);
 					customOn = true;
 					optionsSeedMessage.setText("Enabled " + customChallenges.size() + " custom challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("customOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -280,8 +293,38 @@ public class Options
 					}
 					customOn = false;
 					optionsSeedMessage.setText("Disabled " + customChallenges.size() + " custom challenges.");
-					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("customOn set to: " + customOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+			}
+		});
+		this.nightmareToggle.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (nightmareOn == false)
+				{
+					for (int i = 0; i < nightmareChallenges.length; i++)
+					{
+						posChals.add(nightmareChallenges[i]);
+					}
+					nightmareOn = true;
+					optionsSeedMessage.setText("NIGHTMARES ENABLED. GOOD LUCK...");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("nightmareOn set to: " + nightmareOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+				else
+				{
+					for (int i = 0; i < nightmareChallenges.length; i++)
+					{
+						posChals.remove(nightmareChallenges[i]);
+					}
+					nightmareOn = false;
+					optionsSeedMessage.setText("You live another day...");
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("nightmareOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
 			}
@@ -370,12 +413,29 @@ public class Options
 				startLayout.createSequentialGroup()
 					.addComponent(optionsStartAdvancedButton)
 					.addComponent(optionsStartAboutButton)
-					.addComponent(optionsStartPlayButton)
+					.addComponent(optionsStartPlayButton, 60, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		);
 
-
+		// optionsFrame.pack();
 	}
 	
+	public boolean nightmareWindow()
+	{
+		if (nightmareCheck == false)
+		{
+			JFrame nightmareWindow = new JFrame();
+			nightmareWindow.setSize(800,300);
+			nightmareWindow.setLocation(100,100);
+			nightmareWindow.setVisible(true);
+			nightmareWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			nightmareWindow.setTitle("NIGHTMARES");
+
+			JPanel nightmarePanel = new JPanel();
+			nightmareWindow.add(nightmarePanel), ;
+		}
+		return false;
+	}
+
 	public long getSeed()
 	{
 		return userSeed;

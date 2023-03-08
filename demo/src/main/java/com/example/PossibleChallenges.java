@@ -1,4 +1,4 @@
-package com.example;
+package myPackage;
 
 public class PossibleChallenges extends ChalArrayBag
 {
