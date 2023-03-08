@@ -98,7 +98,12 @@ public class Options
 	private JButton optionsSeedConfirmButton;
 	private JButton optionsSeedRandomButton;
 	private JLabel optionsSeedMessage;
+	private JLabel optionsSeedLog;
 	
+	private JPanel optionsStartFrame;
+	private JPanel optionsStartAdvancedButton;
+	private JPanel optionsStartAboutButton;
+	private JPanel optionsStartPlayButton;
 	
 	public Options()
 	{
@@ -268,7 +273,8 @@ public class Options
 		optionsSeedTextField = new JTextField("Enter Custom Seed");
 		optionsSeedConfirmButton = new JButton("Confirm Seed");
 		optionsSeedRandomButton = new JButton("Randomize Seed");
-		optionsSeedMessage = new JLabel("optionsSeedMessage");
+		optionsSeedMessage = new JLabel(" ");
+		optionsSeedLog = new JLabel(" ");
 		GroupLayout seedLayout = new GroupLayout(optionsSeedPanel);
 		optionsSeedPanel.setLayout(seedLayout);
 		seedLayout.setAutoCreateGaps(true);
@@ -281,6 +287,7 @@ public class Options
 							.addComponent(optionsSeedRandomButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(optionsSeedConfirmButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addComponent(optionsSeedMessage)
+					.addComponent(optionsSeedLog)
 		);
 		seedLayout.setVerticalGroup(
 				seedLayout.createSequentialGroup()
@@ -290,6 +297,7 @@ public class Options
 							.addComponent(optionsSeedRandomButton) 														
 							.addComponent(optionsSeedConfirmButton))
 					.addComponent(optionsSeedMessage)
+					.addComponent(optionsSeedLog)
 		);
 		
 		this.optionsSeedConfirmButton.addActionListener(new ActionListener()
@@ -300,11 +308,15 @@ public class Options
         		{
         			String seedString = optionsSeedTextField.getText();
         			setSeed(Long.parseLong(seedString));
+					optionsSeedMessage.setText("Seed Confirmed!");
+					optionsSeedLog.setText("Current Seed: " + userSeed);
         		}
         		catch (NumberFormatException z)
         		{
         			System.out.println("Seed is invalid.\nMaintaining previous seed: "
         									+ userSeed);
+					optionsSeedMessage.setText("ERROR: Invalid seed. Maintaining previous seed.");
+					optionsSeedLog.setText("Current Seed: " + userSeed);
         		}
         	}
         });
@@ -313,9 +325,11 @@ public class Options
         	public void actionPerformed(ActionEvent e)
         	{
         		Random r = new Random();
-        		userSeed = r.nextLong();
-        		String s = String.valueOf(userSeed);
+        		long j = r.nextLong();
+        		String s = String.valueOf(j);
         		optionsSeedTextField.setText(s);
+				optionsSeedMessage.setText("Generated a random seed. Click confirm to apply.");
+				optionsSeedLog.setText("Current Seed: " + userSeed);
         	}
         });
 	}
