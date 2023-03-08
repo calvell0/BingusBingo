@@ -91,6 +91,7 @@ public class Options
 	private JRadioButton medToggle;
 	private JRadioButton hardToggle;
 	private JRadioButton customToggle;
+	private JLabel chalTally;
 	
 	private JPanel optionsSeedPanel;
 	private JTextField optionsSeedTextField;
@@ -124,7 +125,7 @@ public class Options
 		
 		//OPTIONS frame
 		optionsFrame = new JFrame();
-		optionsFrame.setSize(600,200);
+		optionsFrame.setSize(800,200);
 		optionsFrame.setLocation(100,100);
 		optionsFrame.setVisible(true);
 		optionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -145,6 +146,7 @@ public class Options
 		medToggle = new JRadioButton("Enable Med Challenges");
 		hardToggle = new JRadioButton("Enable Hard Challenges");
 		customToggle = new JRadioButton("Enable Custom Challenges");
+		chalTally = new JLabel("(Enabled Challenges: " + posChals.size() + ")");
 		GroupLayout toggleLayout = new GroupLayout(optionsTogglePanel);
 		optionsTogglePanel.setLayout(toggleLayout);
 		toggleLayout.setAutoCreateGaps(true);
@@ -155,7 +157,8 @@ public class Options
 							.addComponent(easyToggle)
 							.addComponent(medToggle)
 							.addComponent(hardToggle)
-							.addComponent(customToggle))
+							.addComponent(customToggle)
+							.addComponent(chalTally))
 		);
 		toggleLayout.setVerticalGroup(
 				toggleLayout.createSequentialGroup()
@@ -163,6 +166,7 @@ public class Options
 					.addComponent(medToggle)
 					.addComponent(hardToggle)
 					.addComponent(customToggle)
+					.addComponent(chalTally)
 		);
 		
 		this.easyToggle.addActionListener(new ActionListener()
@@ -176,6 +180,8 @@ public class Options
 						posChals.add(easyChallenges[i]);
 					}
 					easyOn = true;
+					optionsSeedMessage.setText("Enabled " + easyChallenges.length + " easy challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -186,6 +192,8 @@ public class Options
 						posChals.remove(easyChallenges[i]);
 					}
 					easyOn = false;
+					optionsSeedMessage.setText("Disabled " + easyChallenges.length + " easy challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -202,6 +210,8 @@ public class Options
 						posChals.add(medChallenges[i]);
 					}
 					medOn = true;
+					optionsSeedMessage.setText("Enabled " + medChallenges.length + " medium challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -212,6 +222,8 @@ public class Options
 						posChals.remove(medChallenges[i]);
 					}
 					medOn = false;
+					optionsSeedMessage.setText("Disabled " + medChallenges.length + " medium challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -228,6 +240,8 @@ public class Options
 						posChals.add(hardChallenges[i]);
 					}
 					hardOn = true;
+					optionsSeedMessage.setText("Enabled " + hardChallenges.length + " hard challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("hardOn set to: " + hardOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -238,6 +252,8 @@ public class Options
 						posChals.remove(hardChallenges[i]);
 					}
 					hardOn = false;
+					optionsSeedMessage.setText("Disabled " + hardChallenges.length + " hard challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("hardOn set to: " + hardOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -251,6 +267,8 @@ public class Options
 				{
 					posChals.addAll(customChallenges);
 					customOn = true;
+					optionsSeedMessage.setText("Enabled " + customChallenges.size() + " custom challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("customOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -261,6 +279,8 @@ public class Options
 						posChals.remove(customChallenges.getData(i));
 					}
 					customOn = false;
+					optionsSeedMessage.setText("Disabled " + customChallenges.size() + " custom challenges.");
+					chalTally.setText("(Enabled Challenges: " + posChals.size() + ")");
 					System.out.println("customOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
