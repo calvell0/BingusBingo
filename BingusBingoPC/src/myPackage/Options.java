@@ -100,10 +100,10 @@ public class Options
 	private JLabel optionsSeedMessage;
 	private JLabel optionsSeedLog;
 	
-	private JPanel optionsStartFrame;
-	private JPanel optionsStartAdvancedButton;
-	private JPanel optionsStartAboutButton;
-	private JPanel optionsStartPlayButton;
+	private JPanel optionsStartPanel;
+	private JButton optionsStartAdvancedButton;
+	private JButton optionsStartAboutButton;
+	private JButton optionsStartPlayButton;
 	
 	public Options()
 	{
@@ -281,7 +281,6 @@ public class Options
 		seedLayout.setAutoCreateContainerGaps(true);
 		seedLayout.setHorizontalGroup(
 				seedLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
-//					.addComponent(optionsSeedMessage)
 					.addComponent(optionsSeedTextField, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(seedLayout.createSequentialGroup()
 							.addComponent(optionsSeedRandomButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,7 +290,6 @@ public class Options
 		);
 		seedLayout.setVerticalGroup(
 				seedLayout.createSequentialGroup()
-//					.addComponent(optionsSeedMessage)
 					.addComponent(optionsSeedTextField, 30, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGroup(seedLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)						
 							.addComponent(optionsSeedRandomButton) 														
@@ -332,6 +330,30 @@ public class Options
 				optionsSeedLog.setText("Current Seed: " + userSeed);
         	}
         });
+
+		optionsStartPanel = new JPanel();
+		optionsFrame.add(optionsStartPanel, BorderLayout.LINE_END);
+		optionsStartAdvancedButton = new JButton("Advanced Settings");
+		optionsStartAboutButton = new JButton("About");
+		optionsStartPlayButton = new JButton("PLAY!");
+		GroupLayout startLayout = new GroupLayout(optionsStartPanel);
+		optionsStartPanel.setLayout(startLayout);
+		startLayout.setAutoCreateGaps(true);
+		startLayout.setAutoCreateContainerGaps(true);
+		startLayout.setHorizontalGroup(
+				startLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+					.addComponent(optionsStartAdvancedButton, 200, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(optionsStartAboutButton, 200, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(optionsStartPlayButton, 200, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		);
+		startLayout.setVerticalGroup(
+				startLayout.createSequentialGroup()
+					.addComponent(optionsStartAdvancedButton)
+					.addComponent(optionsStartAboutButton)
+					.addComponent(optionsStartPlayButton)
+		);
+
+
 	}
 	
 	public long getSeed()
