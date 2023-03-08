@@ -7,7 +7,7 @@ public class Main
 	{
 		Options optMenu = new Options();
 	}
-	
+
 	public static void main(String[] args)
 	{
 		Main play = new Main();

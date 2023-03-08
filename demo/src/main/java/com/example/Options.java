@@ -418,20 +418,6 @@ public class Options
 
 		// optionsFrame.pack();
 	}
-	
-	public boolean nightmareWindow()
-	{
-		if (nightmareCheck == true)
-		{
-			JFrame nightmareWindow = new JFrame();
-			nightmareWindow.setSize(800,300);
-			nightmareWindow.setLocation(100,100);
-			nightmareWindow.setVisible(true);
-			nightmareWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			nightmareWindow.setTitle("Elden Ring Randomizer Bingo");
-		}
-		return false;
-	}
 
 	public long getSeed()
 	{
