@@ -1,32 +1,39 @@
 package com.example;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
-
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import java.awt.GridLayout;
+// import javax.swing.GroupLayout;
+// import javax.swing.JButton;
+// import javax.swing.JFrame;
+// import javax.swing.JLabel;
+// import javax.swing.JMenu;
+// import javax.swing.JMenuBar;
+// import javax.swing.JMenuItem;
+// import javax.swing.JPanel;
+// import javax.swing.JCheckBox;
+// import javax.swing.JTextField;
+// import javax.swing.SwingConstants;
+// import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Options
 {
 	//Arrays
-	private ChalArrayBag posChals;
-	private CustChalBag customChallenges;
-	private String[] easyChallenges = new String[] { 
+	public ChalArrayBag posChals;
+	public CustChalBag customChallenges;
+	public String[] easyChallenges = new String[] { 
+			"Assassinate Patches", 
 			"Acquire a legendary armament", 
 			"Defeat an optional cave's boss", 							
 			"Acquire a +3 flask",  										
 			"Kill an NPC invader", 
 			"Mix a Physick Flask with 2 tears", 
-			"Craft 20 bone arrows", 
+			"Craft 20 bone darts", 
 			"Defeat the boss in the Soldier Of Godrick's Arena", 
 			"Give the beast clergyman a deathroot", 
 			"Embrace Fia", 												
@@ -41,7 +48,7 @@ public class Options
 			"Recieve an item from Albus the albinuric", 
 			"Knock an enemy off their horse"};	
 
-	private String[] medChallenges = new String[] {
+	public String[] medChallenges = new String[] {
 			"Defeat a boss while over 100% equip load", 
 			"Level up to 25 arcane", 								   
 			"Upgrade a weapon to +15",
@@ -59,7 +66,7 @@ public class Options
 			"Defeat a rememberance boss", 
 			"Defeat a boss using powerstanced weapons",
 			"Equip 2 armor pieces from the same set"};
-	private String[] hardChallenges = new String[] {
+	public String[] hardChallenges = new String[] {
 			"Acquire Mohg's Greatrune", 
 			"Enter Liurnia", 											
 			"Defeat Elden Beast", 
@@ -69,12 +76,14 @@ public class Options
 			"Defeat the boss in Dragonlord Placidusax's Arena", 
 			"Equip 3 spells or incantations simultaneously", 
 			"Burn the thorns from the Erdtree"};
-	private String[] nightmareChallenges = new String[] {
+	public String[] nightmareChallenges = new String[] {
 			"Embrace the 3 Fingers", 
 			"Enter Elphael Brace of the Haligtree", 					
 			"Defeat the boss in Malenia's Arena", 
 			"Invert the Carian Study Hall", 
-			"Enter the consecrated snowfield",  
+			"Enter the consecrated snowfield",
+			"Defeat a boss without using your hands IRL",
+			"Defeat a boss using only your fists"
 	};
 	
 	//Status fields
@@ -83,7 +92,6 @@ public class Options
 	private boolean hardOn;
 	private boolean nightmareOn;
 	private boolean customOn;
-	private boolean nightmareCheck;
 	private long userSeed;
 	
 	//JFrame element declarations
@@ -92,16 +100,15 @@ public class Options
 	private JLabel optionsTitleLabel;
 	
 	private JPanel optionsTogglePanel;
-	private JRadioButton easyToggle;
-	private JRadioButton medToggle;
-	private JRadioButton hardToggle;
-	private JRadioButton nightmareToggle;
-	private JRadioButton customToggle;
+	private JCheckBox easyToggle;
+	private JCheckBox medToggle;
+	private JCheckBox hardToggle;
+	private JCheckBox nightmareToggle;
+	private JCheckBox customToggle;
 	private JLabel chalTally;
 	
 	private JPanel optionsSeedPanel;
 	private JTextField optionsSeedTextField;
-	private JLabel	optionsSeedLabel;
 	private JButton optionsSeedConfirmButton;
 	private JButton optionsSeedRandomButton;
 	private JLabel optionsSeedMessage;
@@ -112,6 +119,40 @@ public class Options
 	private JButton optionsStartAboutButton;
 	private JButton optionsStartPlayButton;
 	
+	//Enable/Disable Challenges Menu Declarations
+	private JFrame advancedMenuFrame;
+	private JPanel advancedMenuPanel;
+	private GridLayout advancedMenuLayout;
+	private JMenuBar advancedMenuBar;
+	private JMenu enableMenu;
+	private JMenu guaranteeMenu;
+	private JMenuItem easyMenu;
+	private JMenuItem medMenu;
+	private JMenuItem hardMenu;
+	private JMenuItem customMenu;
+
+	//easyMenu button declarations
+	private JCheckBox e1;
+	private JCheckBox e2;
+	private JCheckBox e3;
+	private JCheckBox e4;
+	private JCheckBox e5;
+	private JCheckBox e6;
+	private JCheckBox e7;
+	private JCheckBox e8;
+	private JCheckBox e9;
+	private JCheckBox e10;
+	private JCheckBox e11;
+	private JCheckBox e12;
+	private JCheckBox e13;
+	private JCheckBox e14;
+	private JCheckBox e15;
+	private JCheckBox e16;
+	private JCheckBox e17;
+	private JCheckBox e18;
+	private JCheckBox e19;
+	private JCheckBox e20;
+
 	public Options()
 	{
 		//Initializers for bags
@@ -129,13 +170,12 @@ public class Options
 		hardOn = false;
 		nightmareOn = false;
 		customOn = false;
-		nightmareCheck = false;
 		
 		
 		//OPTIONS frame
 		optionsFrame = new JFrame();
-		optionsFrame.setSize(800,220);
-		optionsFrame.setLocation(100,100);
+		optionsFrame.setSize(800,300);
+		optionsFrame.setLocation(200,200);
 		optionsFrame.setVisible(true);
 		optionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		optionsFrame.setTitle("Elden Ring Randomizer Bingo");
@@ -151,11 +191,11 @@ public class Options
 		//Options TOGGLE panel
 		optionsTogglePanel = new JPanel();
 		optionsFrame.add(optionsTogglePanel, BorderLayout.LINE_START);
-		easyToggle = new JRadioButton("Enable Easy Challenges");
-		medToggle = new JRadioButton("Enable Med Challenges");
-		hardToggle = new JRadioButton("Enable Hard Challenges");
-		nightmareToggle = new JRadioButton("ENABLE NIGHTMARES");
-		customToggle = new JRadioButton("Enable Custom Challenges");
+		easyToggle = new JCheckBox("Enable Easy Challenges");
+		medToggle = new JCheckBox("Enable Med Challenges");
+		hardToggle = new JCheckBox("Enable Hard Challenges");
+		nightmareToggle = new JCheckBox("ENABLE NIGHTMARES");
+		customToggle = new JCheckBox("Enable Custom Challenges");
 		chalTally = new JLabel("(Challenges Enabled: " + posChals.size() + ")");
 		GroupLayout toggleLayout = new GroupLayout(optionsTogglePanel);
 		optionsTogglePanel.setLayout(toggleLayout);
@@ -312,6 +352,8 @@ public class Options
 					nightmareOn = true;
 					optionsSeedMessage.setText("NIGHTMARES ENABLED. GOOD LUCK...");
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println(optionsStartPlayButton.getFont());
+					optionsStartPlayButton.setFont(new Font("wingdings", Font.PLAIN, 10));
 					System.out.println("nightmareOn set to: " + nightmareOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -323,6 +365,7 @@ public class Options
 					}
 					nightmareOn = false;
 					optionsSeedMessage.setText("You live another day...");
+					optionsStartPlayButton.setFont(new Font("Dialogue", Font.BOLD, 12));
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("nightmareOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
@@ -416,7 +459,165 @@ public class Options
 					.addComponent(optionsStartPlayButton, 60, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		);
 
-		// optionsFrame.pack();
+		 this.optionsStartAdvancedButton.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		openAdvancedMenu();
+        	}
+        });
+
+		
+
+
+	//END OF CONSTRUCTOR DONT WRITE PAST HERE LIKE U//////
+	//DID EARLIER FOR 20 MINUTES WONDERING WHY ITS NOT////
+	//WORKING I SWEAR TO GOD//////////////////////////////
+	}
+
+	public void openAdvancedMenu()
+	{
+		//Displays The Challenge Customizer Menu
+		advancedMenuFrame = new JFrame("[=] JMenuBar [=]");
+		advancedMenuBar = new JMenuBar();
+		advancedMenuFrame.setJMenuBar(advancedMenuBar);
+		advancedMenuPanel = new JPanel();
+		advancedMenuFrame.add(advancedMenuPanel);
+		advancedMenuLayout = new GridLayout(10,3);
+		advancedMenuPanel.setLayout(advancedMenuLayout);
+		advancedMenuFrame.setSize(500, 500);
+        advancedMenuFrame.setVisible(true);
+		enableMenu = new JMenu("[View/Toggle Challenges]");
+		guaranteeMenu = new JMenu("[Guarantee Challenges]");
+		advancedMenuBar.add(enableMenu);
+		advancedMenuBar.add(guaranteeMenu);
+		easyMenu = new JMenuItem("Easy Challenges");
+		medMenu = new JMenuItem("Medium Challenges");
+		hardMenu = new JMenuItem("Hard Challenges");
+		customMenu = new JMenuItem("Custom Challenges");
+		enableMenu.add(easyMenu);
+		enableMenu.add(medMenu);
+		enableMenu.add(hardMenu);
+		enableMenu.add(customMenu);
+
+		//Menu Button Listeners
+		this.easyMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+				easyMenu.setVisible(true);
+				medMenu.setVisible(false);
+				hardMenu.setVisible(false);
+				customMenu.setVisible(false);
+
+				//Initialize a checkbox for each easy challenge.
+				 e1 = new JCheckBox(easyChallenges[0]);
+				 e2 = new JCheckBox(easyChallenges[1]);
+				 e3 = new JCheckBox(easyChallenges[2]);
+				 e4 = new JCheckBox(easyChallenges[3]);
+				 e5 = new JCheckBox(easyChallenges[4]);
+				 e6 = new JCheckBox(easyChallenges[5]);
+				 e7 = new JCheckBox(easyChallenges[6]);
+				 e8 = new JCheckBox(easyChallenges[7]);
+				 e9 = new JCheckBox(easyChallenges[8]);
+				 e10 = new JCheckBox(easyChallenges[9]);
+				 e11 = new JCheckBox(easyChallenges[10]);
+				 e12 = new JCheckBox(easyChallenges[11]);
+				 e13 = new JCheckBox(easyChallenges[12]);
+				 e14 = new JCheckBox(easyChallenges[13]);
+				 e15 = new JCheckBox(easyChallenges[14]);
+				 e16 = new JCheckBox(easyChallenges[15]);
+				 e17 = new JCheckBox(easyChallenges[16]);
+				 e18 = new JCheckBox(easyChallenges[17]);
+				 e19 = new JCheckBox(easyChallenges[18]);
+				 e20 = new JCheckBox(easyChallenges[19]);
+
+				advancedMenuPanel.add(e1);
+				advancedMenuPanel.add(e2);
+				advancedMenuPanel.add(e3);
+				advancedMenuPanel.add(e4);
+				advancedMenuPanel.add(e5);
+				advancedMenuPanel.add(e6);
+				advancedMenuPanel.add(e7);
+				advancedMenuPanel.add(e8);
+				advancedMenuPanel.add(e9);
+				advancedMenuPanel.add(e10);
+				advancedMenuPanel.add(e11);
+				advancedMenuPanel.add(e12);
+				advancedMenuPanel.add(e13);
+				advancedMenuPanel.add(e14);
+				advancedMenuPanel.add(e15);
+				advancedMenuPanel.add(e16);
+				advancedMenuPanel.add(e17);
+				advancedMenuPanel.add(e18);
+				advancedMenuPanel.add(e19);
+				advancedMenuPanel.add(e20);
+
+				advancedMenuFrame.pack();
+
+        	}
+        });
+		this.medMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		System.out.println("Currently in medium menu");
+        	}
+        });
+		this.hardMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		System.out.println("Currently in hard menu");
+        	}
+        });
+		this.customMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		System.out.println("Currently in custom menu");
+        	}
+        });
+
+		//TODO: action listeners are throwing nullpointer exceptions
+			//for some reason when the advanced frame opens. Idk why.
+			//Also I literally need to make 100 more of these. Awesome.
+		// e1.addActionListener(new ActionListener()
+		// {
+		// 	public void actionPerformed(ActionEvent e)
+		// 	{
+		// 		System.out.println("e1 clicked");
+		// 		if (posChals.countOccurences(easyChallenges[0]) > 0)
+		// 		{
+		// 				System.out.println("# of Possible Challenges: " + posChals.size());
+		// 				chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		// 				posChals.remove(easyChallenges[0]);
+		// 		}
+		// 		else
+		// 		{
+		// 			System.out.println("# of Possible Challenges: " + posChals.size());
+		// 			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		// 			posChals.add(easyChallenges[0]);
+		// 		}
+		// 	}
+		// });
+		// e2.addActionListener(new ActionListener()
+		// {
+		// 	public void actionPerformed(ActionEvent e)
+		// 	{
+		// 		if (posChals.countOccurences(easyChallenges[1]) > 0)
+		// 		{
+		// 			for (int i = 0; i < posChals.countOccurences(easyChallenges[1]); i++)
+		// 			{
+		// 				posChals.remove(easyChallenges[1]);
+		// 			}
+		// 		}
+		// 		else
+		// 		{
+		// 			posChals.add(easyChallenges[1]);
+		// 		}
+		// 	}
+		// });
 	}
 
 	public long getSeed()
@@ -427,7 +628,7 @@ public class Options
 	public void setSeed(long newSeed)
 	{
 		userSeed = newSeed;
-		System.out.println("A new seed was set: "+ userSeed);
+		System.out.println("A new seed was set: " + userSeed);
 	}
 	
 	public void initPossibleChallenges()
