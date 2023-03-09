@@ -393,10 +393,10 @@ public class Options
 						posChals.add(nightmareChallenges[i]);
 					}
 					nightmareOn = true;
-					optionsSeedMessage.setText("NIGHTMARES ENABLED. GOOD LUCK...");
+					optionsSeedMessage.setText("NIGHTMARES ENABLED.");
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
-					System.out.println(optionsStartPlayButton.getFont());
-					optionsStartPlayButton.setFont(new Font("wingdings", Font.PLAIN, 10));
+					optionsStartPlayButton.setText("GOOD NIGHT GOOD LUCK");
+					optionsStartPlayButton.setFont(new Font("Dialogue", Font.BOLD, 12));
 					System.out.println("nightmareOn set to: " + nightmareOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
@@ -408,6 +408,7 @@ public class Options
 					}
 					nightmareOn = false;
 					optionsSeedMessage.setText("You live another day...");
+					optionsStartPlayButton.setText("Play!");
 					optionsStartPlayButton.setFont(new Font("Dialogue", Font.BOLD, 12));
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("nightmareOn set to: " + customOn);
@@ -619,8 +620,6 @@ public class Options
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
        	});
-
-		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
 		e2.addActionListener(new ActionListener()
        	   	 {
         		public void actionPerformed(ActionEvent e)
@@ -651,6 +650,530 @@ public class Options
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
        	});
-
+		   e3.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("e3 working");
+			if (e3.isSelected() == true)
+			{
+				if (posChals.countOccurences(easyChallenges[2]) == 0)
+				{
+					if (easyToggle.isSelected() == true)
+					{
+						posChals.add(easyChallenges[2]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+			}
+			if (e3.isSelected() == false)
+			{
+				if (posChals.countOccurences(easyChallenges[2]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(easyChallenges[2]); b++)
+					{
+						posChals.remove(easyChallenges[2]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   e4.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+					System.out.println("e4 working");
+        			if (e4.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[3]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[3]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e4.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[3]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[3]); b++)
+							{
+								posChals.remove(easyChallenges[3]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   e5.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("e5 working");
+			if (e5.isSelected() == true)
+			{
+				if (posChals.countOccurences(easyChallenges[4]) == 0)
+				{
+					if (easyToggle.isSelected() == true)
+					{
+						posChals.add(easyChallenges[4]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+			}
+			if (e5.isSelected() == false)
+			{
+				if (posChals.countOccurences(easyChallenges[4]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(easyChallenges[4]); b++)
+					{
+						posChals.remove(easyChallenges[4]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+	e6.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e6.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[5]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[5]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e6.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[5]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[5]); b++)
+							{
+								posChals.remove(easyChallenges[5]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});	
+		   e7.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			if (e7.isSelected() == true)
+			{
+				if (posChals.countOccurences(easyChallenges[6]) == 0)
+				{
+					if (easyToggle.isSelected() == true)
+					{
+						posChals.add(easyChallenges[6]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+			}
+			if (e7.isSelected() == false)
+			{
+				if (posChals.countOccurences(easyChallenges[6]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(easyChallenges[6]); b++)
+					{
+						posChals.remove(easyChallenges[6]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   e8.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e8.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[7]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[7]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e8.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[7]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[7]); b++)
+							{
+								posChals.remove(easyChallenges[7]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   e9.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			if (e9.isSelected() == true)
+			{
+				if (posChals.countOccurences(easyChallenges[8]) == 0)
+				{
+					if (easyToggle.isSelected() == true)
+					{
+						posChals.add(easyChallenges[8]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+			}
+			if (e9.isSelected() == false)
+			{
+				if (posChals.countOccurences(easyChallenges[8]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(easyChallenges[8]); b++)
+					{
+						posChals.remove(easyChallenges[8]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   e10.addActionListener(new ActionListener()
+   {
+public void actionPerformed(ActionEvent e)
+{
+	if (e10.isSelected() == true)
+	{
+		if (posChals.countOccurences(easyChallenges[9]) == 0)
+		{
+			if (easyToggle.isSelected() == true)
+			{
+				posChals.add(easyChallenges[9]);
+			}
+		}
+		optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+	}
+	if (e10.isSelected() == false)
+	{
+		if (posChals.countOccurences(easyChallenges[9]) > 0)
+		{
+			for (int b = 0; b < posChals.countOccurences(easyChallenges[9]); b++)
+			{
+				posChals.remove(easyChallenges[9]);
+			}
+		}
+		optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+	}
+	chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+}
+});
+	e11.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e11.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[10]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[10]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e11.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[10]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[10]); b++)
+							{
+								posChals.remove(easyChallenges[10]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e12.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e12.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[11]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[11]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e12.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[11]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[11]); b++)
+							{
+								posChals.remove(easyChallenges[11]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e13.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e13.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[12]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[12]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e13.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[12]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[12]); b++)
+							{
+								posChals.remove(easyChallenges[12]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e14.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e14.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[13]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[13]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e14.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[13]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[13]); b++)
+							{
+								posChals.remove(easyChallenges[13]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e15.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e15.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[14]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[14]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e15.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[14]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[14]); b++)
+							{
+								posChals.remove(easyChallenges[14]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e16.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e16.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[15]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[15]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e16.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[15]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[15]); b++)
+							{
+								posChals.remove(easyChallenges[15]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e17.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e17.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[16]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[16]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e17.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[16]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[16]); b++)
+							{
+								posChals.remove(easyChallenges[16]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e18.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e18.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[17]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[17]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e18.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[17]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[17]); b++)
+							{
+								posChals.remove(easyChallenges[17]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e19.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e19.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[18]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[18]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e19.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[18]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[18]); b++)
+							{
+								posChals.remove(easyChallenges[18]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			e20.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e20.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[19]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[19]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e20.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[19]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[19]); b++)
+							{
+								posChals.remove(easyChallenges[19]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
 	}
 }
