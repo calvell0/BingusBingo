@@ -1,4 +1,5 @@
 package com.example;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -6,26 +7,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.*;
-import java.awt.GridLayout;
-// import javax.swing.GroupLayout;
-// import javax.swing.JButton;
-// import javax.swing.JFrame;
-// import javax.swing.JLabel;
-// import javax.swing.JMenu;
-// import javax.swing.JMenuBar;
-// import javax.swing.JMenuItem;
-// import javax.swing.JPanel;
-// import javax.swing.JCheckBox;
-// import javax.swing.JTextField;
-// import javax.swing.SwingConstants;
-// import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+
 
 public class Options
 {
 	//Arrays
-	public ChalArrayBag posChals;
+	public PossibleChallenges posChals;
 	public CustChalBag customChallenges;
+	public JCheckBox[] easyEnablerButtons;
 	public String[] easyChallenges = new String[] { 
 			"Assassinate Patches", 
 			"Acquire a legendary armament", 
@@ -93,6 +85,11 @@ public class Options
 	private boolean nightmareOn;
 	private boolean customOn;
 	private long userSeed;
+	private int dispEasyCount = 0;
+	private int dispMedCount = 0;
+	private int dispHardCount = 0;
+	private int dispCustomCount = 0;
+	private int dispTotalCount = 0;
 	
 	//JFrame element declarations
 	private JFrame optionsFrame;
@@ -119,7 +116,7 @@ public class Options
 	private JButton optionsStartAboutButton;
 	private JButton optionsStartPlayButton;
 	
-	//Enable/Disable Challenges Menu Declarations
+	// Enable/Disable Challenges Menu Declarations
 	private JFrame advancedMenuFrame;
 	private JPanel advancedMenuPanel;
 	private GridLayout advancedMenuLayout;
@@ -131,7 +128,7 @@ public class Options
 	private JMenuItem hardMenu;
 	private JMenuItem customMenu;
 
-	//easyMenu button declarations
+	// easyMenu button declarations
 	private JCheckBox e1;
 	private JCheckBox e2;
 	private JCheckBox e3;
@@ -171,6 +168,36 @@ public class Options
 		nightmareOn = false;
 		customOn = false;
 		
+		//Initialize easyEnabler menu buttons, add them to
+		//JCheckBox array easyEnablerButtons, the set them all
+		//to true by default on program startup.
+		e1 = new JCheckBox(easyChallenges[0]);
+        e2 = new JCheckBox(easyChallenges[1]);
+        e3 = new JCheckBox(easyChallenges[2]);
+        e4 = new JCheckBox(easyChallenges[3]);
+        e5 = new JCheckBox(easyChallenges[4]);
+        e6 = new JCheckBox(easyChallenges[5]);
+        e7 = new JCheckBox(easyChallenges[6]);
+        e8 = new JCheckBox(easyChallenges[7]);
+        e9 = new JCheckBox(easyChallenges[8]);
+        e10 = new JCheckBox(easyChallenges[9]);
+        e11 = new JCheckBox(easyChallenges[10]);
+        e12 = new JCheckBox(easyChallenges[11]);
+        e13 = new JCheckBox(easyChallenges[12]);
+        e14 = new JCheckBox(easyChallenges[13]);
+        e15 = new JCheckBox(easyChallenges[14]);
+        e16 = new JCheckBox(easyChallenges[15]);
+        e17 = new JCheckBox(easyChallenges[16]);
+        e18 = new JCheckBox(easyChallenges[17]);
+        e19 = new JCheckBox(easyChallenges[18]);
+        e20 = new JCheckBox(easyChallenges[19]);
+		easyEnablerButtons = new JCheckBox[] {
+			e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, 
+			e15, e16, e17, e18, e19, e20};
+		for (int q = 0; q < easyEnablerButtons.length; q++)
+		{
+			easyEnablerButtons[q].setSelected(true);
+		}
 		
 		//OPTIONS frame
 		optionsFrame = new JFrame();
@@ -230,22 +257,38 @@ public class Options
 				{
 					for (int i = 0; i < easyChallenges.length; i++)
 					{
-						posChals.add(easyChallenges[i]);
+						if (easyEnablerButtons[i].isSelected() == true)
+						{
+							posChals.add(easyChallenges[i]);
+						}
 					}
 					easyOn = true;
-					optionsSeedMessage.setText("Enabled " + easyChallenges.length + " easy challenges.");
+					dispEasyCount = 0;
+					for (int p = 0; p < easyEnablerButtons.length; p++)
+					{
+						dispEasyCount += (posChals.countOccurences(easyChallenges[p]));
+					}
+					optionsSeedMessage.setText("Enabled " + dispEasyCount + " easy challenges.");
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
 				else
 				{
+					dispEasyCount = 0;
+					for (int p = 0; p < easyEnablerButtons.length; p++)
+					{
+						dispEasyCount += (posChals.countOccurences(easyChallenges[p]));
+					}
+					optionsSeedMessage.setText("Removed " + dispEasyCount + " easy challenges.");
 					for (int i = 0; i < easyChallenges.length; i++)
 					{
-						posChals.remove(easyChallenges[i]);
+						if (easyEnablerButtons[i].isSelected() == true)
+						{
+							posChals.remove(easyChallenges[i]);
+						}
 					}
 					easyOn = false;
-					optionsSeedMessage.setText("Disabled " + easyChallenges.length + " easy challenges.");
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
@@ -459,165 +502,13 @@ public class Options
 					.addComponent(optionsStartPlayButton, 60, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		);
 
-		 this.optionsStartAdvancedButton.addActionListener(new ActionListener()
+		this.optionsStartAdvancedButton.addActionListener(new ActionListener()
         {
         	public void actionPerformed(ActionEvent e)
         	{
-        		openAdvancedMenu();
+        		openAdvancedOptions();
         	}
         });
-
-		
-
-
-	//END OF CONSTRUCTOR DONT WRITE PAST HERE LIKE U//////
-	//DID EARLIER FOR 20 MINUTES WONDERING WHY ITS NOT////
-	//WORKING I SWEAR TO GOD//////////////////////////////
-	}
-
-	public void openAdvancedMenu()
-	{
-		//Displays The Challenge Customizer Menu
-		advancedMenuFrame = new JFrame("[=] JMenuBar [=]");
-		advancedMenuBar = new JMenuBar();
-		advancedMenuFrame.setJMenuBar(advancedMenuBar);
-		advancedMenuPanel = new JPanel();
-		advancedMenuFrame.add(advancedMenuPanel);
-		advancedMenuLayout = new GridLayout(10,3);
-		advancedMenuPanel.setLayout(advancedMenuLayout);
-		advancedMenuFrame.setSize(500, 500);
-        advancedMenuFrame.setVisible(true);
-		enableMenu = new JMenu("[View/Toggle Challenges]");
-		guaranteeMenu = new JMenu("[Guarantee Challenges]");
-		advancedMenuBar.add(enableMenu);
-		advancedMenuBar.add(guaranteeMenu);
-		easyMenu = new JMenuItem("Easy Challenges");
-		medMenu = new JMenuItem("Medium Challenges");
-		hardMenu = new JMenuItem("Hard Challenges");
-		customMenu = new JMenuItem("Custom Challenges");
-		enableMenu.add(easyMenu);
-		enableMenu.add(medMenu);
-		enableMenu.add(hardMenu);
-		enableMenu.add(customMenu);
-
-		//Menu Button Listeners
-		this.easyMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-				easyMenu.setVisible(true);
-				medMenu.setVisible(false);
-				hardMenu.setVisible(false);
-				customMenu.setVisible(false);
-
-				//Initialize a checkbox for each easy challenge.
-				 e1 = new JCheckBox(easyChallenges[0]);
-				 e2 = new JCheckBox(easyChallenges[1]);
-				 e3 = new JCheckBox(easyChallenges[2]);
-				 e4 = new JCheckBox(easyChallenges[3]);
-				 e5 = new JCheckBox(easyChallenges[4]);
-				 e6 = new JCheckBox(easyChallenges[5]);
-				 e7 = new JCheckBox(easyChallenges[6]);
-				 e8 = new JCheckBox(easyChallenges[7]);
-				 e9 = new JCheckBox(easyChallenges[8]);
-				 e10 = new JCheckBox(easyChallenges[9]);
-				 e11 = new JCheckBox(easyChallenges[10]);
-				 e12 = new JCheckBox(easyChallenges[11]);
-				 e13 = new JCheckBox(easyChallenges[12]);
-				 e14 = new JCheckBox(easyChallenges[13]);
-				 e15 = new JCheckBox(easyChallenges[14]);
-				 e16 = new JCheckBox(easyChallenges[15]);
-				 e17 = new JCheckBox(easyChallenges[16]);
-				 e18 = new JCheckBox(easyChallenges[17]);
-				 e19 = new JCheckBox(easyChallenges[18]);
-				 e20 = new JCheckBox(easyChallenges[19]);
-
-				advancedMenuPanel.add(e1);
-				advancedMenuPanel.add(e2);
-				advancedMenuPanel.add(e3);
-				advancedMenuPanel.add(e4);
-				advancedMenuPanel.add(e5);
-				advancedMenuPanel.add(e6);
-				advancedMenuPanel.add(e7);
-				advancedMenuPanel.add(e8);
-				advancedMenuPanel.add(e9);
-				advancedMenuPanel.add(e10);
-				advancedMenuPanel.add(e11);
-				advancedMenuPanel.add(e12);
-				advancedMenuPanel.add(e13);
-				advancedMenuPanel.add(e14);
-				advancedMenuPanel.add(e15);
-				advancedMenuPanel.add(e16);
-				advancedMenuPanel.add(e17);
-				advancedMenuPanel.add(e18);
-				advancedMenuPanel.add(e19);
-				advancedMenuPanel.add(e20);
-
-				advancedMenuFrame.pack();
-
-        	}
-        });
-		this.medMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-        		System.out.println("Currently in medium menu");
-        	}
-        });
-		this.hardMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-        		System.out.println("Currently in hard menu");
-        	}
-        });
-		this.customMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-        		System.out.println("Currently in custom menu");
-        	}
-        });
-
-		//TODO: action listeners are throwing nullpointer exceptions
-			//for some reason when the advanced frame opens. Idk why.
-			//Also I literally need to make 100 more of these. Awesome.
-		// e1.addActionListener(new ActionListener()
-		// {
-		// 	public void actionPerformed(ActionEvent e)
-		// 	{
-		// 		System.out.println("e1 clicked");
-		// 		if (posChals.countOccurences(easyChallenges[0]) > 0)
-		// 		{
-		// 				System.out.println("# of Possible Challenges: " + posChals.size());
-		// 				chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
-		// 				posChals.remove(easyChallenges[0]);
-		// 		}
-		// 		else
-		// 		{
-		// 			System.out.println("# of Possible Challenges: " + posChals.size());
-		// 			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
-		// 			posChals.add(easyChallenges[0]);
-		// 		}
-		// 	}
-		// });
-		// e2.addActionListener(new ActionListener()
-		// {
-		// 	public void actionPerformed(ActionEvent e)
-		// 	{
-		// 		if (posChals.countOccurences(easyChallenges[1]) > 0)
-		// 		{
-		// 			for (int i = 0; i < posChals.countOccurences(easyChallenges[1]); i++)
-		// 			{
-		// 				posChals.remove(easyChallenges[1]);
-		// 			}
-		// 		}
-		// 		else
-		// 		{
-		// 			posChals.add(easyChallenges[1]);
-		// 		}
-		// 	}
-		// });
 	}
 
 	public long getSeed()
@@ -634,5 +525,132 @@ public class Options
 	public void initPossibleChallenges()
 	{
 		posChals = new PossibleChallenges();
+	}
+
+	public void openAdvancedOptions()
+	{
+		// Creates the Advanced Options Window and displays it.
+        advancedMenuFrame = new JFrame("[=] JMenuBar [=]");
+        advancedMenuBar = new JMenuBar();
+        advancedMenuFrame.setJMenuBar(advancedMenuBar);
+        advancedMenuPanel = new JPanel();
+        advancedMenuFrame.add(advancedMenuPanel);
+        advancedMenuLayout = new GridLayout(10, 3);
+        advancedMenuPanel.setLayout(advancedMenuLayout);
+        advancedMenuFrame.setSize(500, 500);
+        advancedMenuFrame.setVisible(true);
+        enableMenu = new JMenu("[View/Toggle Challenges]");
+        guaranteeMenu = new JMenu("[Guarantee Challenges]");
+        advancedMenuBar.add(enableMenu);
+        advancedMenuBar.add(guaranteeMenu);
+        easyMenu = new JMenuItem("Easy Challenges");
+        medMenu = new JMenuItem("Medium Challenges");
+        hardMenu = new JMenuItem("Hard Challenges");
+        customMenu = new JMenuItem("Custom Challenges");
+        enableMenu.add(easyMenu);
+        enableMenu.add(medMenu);
+        enableMenu.add(hardMenu);
+        enableMenu.add(customMenu);
+
+        //ACTION LISTENERS
+        easyMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		openAdvancedEasyEnablerMenu();
+            }
+        });
+	}
+
+	public void openAdvancedEasyEnablerMenu()
+	{
+        advancedMenuPanel.add(e1);
+        advancedMenuPanel.add(e2);
+        advancedMenuPanel.add(e3);
+        advancedMenuPanel.add(e4);
+        advancedMenuPanel.add(e5);
+        advancedMenuPanel.add(e6);
+        advancedMenuPanel.add(e7);
+        advancedMenuPanel.add(e8);
+        advancedMenuPanel.add(e9);
+        advancedMenuPanel.add(e10);
+        advancedMenuPanel.add(e11);
+        advancedMenuPanel.add(e12);
+        advancedMenuPanel.add(e13);
+        advancedMenuPanel.add(e14);
+        advancedMenuPanel.add(e15);
+        advancedMenuPanel.add(e16);
+        advancedMenuPanel.add(e17);
+        advancedMenuPanel.add(e18);
+        advancedMenuPanel.add(e19);
+        advancedMenuPanel.add(e20);
+
+        advancedMenuFrame.pack();
+		
+
+
+		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
+		e1.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (e1.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[0]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[0]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e1.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[0]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[0]); b++)
+							{
+								posChals.remove(easyChallenges[0]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+
+		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
+		e2.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+					System.out.println("e2 working");
+        			if (e2.isSelected() == true)
+					{
+						if (posChals.countOccurences(easyChallenges[1]) == 0)
+						{
+							if (easyToggle.isSelected() == true)
+							{
+								posChals.add(easyChallenges[1]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to EASY challenge pool.");
+					}
+					if (e2.isSelected() == false)
+					{
+						if (posChals.countOccurences(easyChallenges[1]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(easyChallenges[1]); b++)
+							{
+								posChals.remove(easyChallenges[1]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+
 	}
 }
