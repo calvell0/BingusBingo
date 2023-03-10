@@ -18,6 +18,7 @@ public class Options
 	public PossibleChallenges posChals;
 	public CustChalBag customChallenges;
 	public JCheckBox[] easyEnablerButtons;
+	public JCheckBox[] medEnablerButtons;
 	public String[] easyChallenges = new String[] { 
 			"Assassinate Patches", 
 			"Acquire a legendary armament", 
@@ -57,7 +58,10 @@ public class Options
 			"Defeat the boss in Fia's Champions' arena", 
 			"Defeat a rememberance boss", 
 			"Defeat a boss using powerstanced weapons",
-			"Equip 2 armor pieces from the same set"};
+			"Equip 2 armor pieces from the same set", 
+			"Reach the Altus Plateau",
+			"Obtain 3 Great Runes",
+			"Defeat a boss without healing more than once"};
 	public String[] hardChallenges = new String[] {
 			"Acquire Mohg's Greatrune", 
 			"Enter Liurnia", 											
@@ -75,7 +79,8 @@ public class Options
 			"Invert the Carian Study Hall", 
 			"Enter the consecrated snowfield",
 			"Defeat a boss without using your hands IRL",
-			"Defeat a boss using only your fists"
+			"Defeat a boss using only your fists",
+			"Defeat a rememberance boss using inverted camera controls"
 	};
 	
 	//Status fields
@@ -150,6 +155,28 @@ public class Options
 	private JCheckBox e19;
 	private JCheckBox e20;
 
+	//medMenu button declarations
+	private JCheckBox m1;
+	private JCheckBox m2;
+	private JCheckBox m3;
+	private JCheckBox m4;
+	private JCheckBox m5;
+	private JCheckBox m6;
+	private JCheckBox m7;
+	private JCheckBox m8;
+	private JCheckBox m9;
+	private JCheckBox m10;
+	private JCheckBox m11;
+	private JCheckBox m12;
+	private JCheckBox m13;
+	private JCheckBox m14;
+	private JCheckBox m15;
+	private JCheckBox m16;
+	private JCheckBox m17;
+	private JCheckBox m18;
+	private JCheckBox m19;
+	private JCheckBox m20;
+	
 	public Options()
 	{
 		//Initializers for bags
@@ -197,6 +224,37 @@ public class Options
 		for (int q = 0; q < easyEnablerButtons.length; q++)
 		{
 			easyEnablerButtons[q].setSelected(true);
+		}
+
+		//Initialize medEnabler menu buttons, add them to
+		//JCheckBox array medEnablerButtons, the set them all
+		//to true by default on program startup.
+		m1 = new JCheckBox(medChallenges[0]);
+        m2 = new JCheckBox(medChallenges[1]);
+        m3 = new JCheckBox(medChallenges[2]);
+        m4 = new JCheckBox(medChallenges[3]);
+        m5 = new JCheckBox(medChallenges[4]);
+        m6 = new JCheckBox(medChallenges[5]);
+        m7 = new JCheckBox(medChallenges[6]);
+        m8 = new JCheckBox(medChallenges[7]);
+        m9 = new JCheckBox(medChallenges[8]);
+        m10 = new JCheckBox(medChallenges[9]);
+        m11 = new JCheckBox(medChallenges[10]);
+        m12 = new JCheckBox(medChallenges[11]);
+        m13 = new JCheckBox(medChallenges[12]);
+        m14 = new JCheckBox(medChallenges[13]);
+        m15 = new JCheckBox(medChallenges[14]);
+        m16 = new JCheckBox(medChallenges[15]);
+        m17 = new JCheckBox(medChallenges[16]);
+        m18 = new JCheckBox(medChallenges[17]);
+        m19 = new JCheckBox(medChallenges[18]);
+        m20 = new JCheckBox(medChallenges[19]);
+		medEnablerButtons = new JCheckBox[] {
+			m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, 
+			m15, m16, m17, m18, m19, m20};
+		for (int q = 0; q < medEnablerButtons.length; q++)
+		{
+			medEnablerButtons[q].setSelected(true);
 		}
 		
 		//OPTIONS frame
@@ -269,6 +327,7 @@ public class Options
 						dispEasyCount += (posChals.countOccurences(easyChallenges[p]));
 					}
 					optionsSeedMessage.setText("Enabled " + dispEasyCount + " easy challenges.");
+					dispEasyCount = 0;
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("easyOn set to: " + easyOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
@@ -303,54 +362,48 @@ public class Options
 				{
 					for (int i = 0; i < medChallenges.length; i++)
 					{
-						posChals.add(medChallenges[i]);
+						if (medEnablerButtons[i].isSelected() == true)
+						{
+							posChals.add(medChallenges[i]);
+						}
 					}
 					medOn = true;
-					optionsSeedMessage.setText("Enabled " + medChallenges.length + " medium challenges.");
+					dispMedCount = 0;
+					for (int p = 0; p < medEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(medChallenges[p]) > 0)
+						{
+							dispMedCount++;
+						}
+					}
+					optionsSeedMessage.setText("Enabled " + dispMedCount + " med challenges.");
+					dispMedCount = 0;
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
 				else
 				{
+					dispMedCount = 0;
+					for (int p = 0; p < medEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(medChallenges[p]) > 0)
+						{
+							dispMedCount++;
+						}
+					}
+					optionsSeedMessage.setText("Removed " + dispMedCount + " med challenges.");
+					dispMedCount = 0;
 					for (int i = 0; i < medChallenges.length; i++)
 					{
-						posChals.remove(medChallenges[i]);
+						if (medEnablerButtons[i].isSelected() == true)
+						{
+							posChals.remove(medChallenges[i]);
+						}
 					}
 					medOn = false;
-					optionsSeedMessage.setText("Disabled " + medChallenges.length + " medium challenges.");
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
-					System.out.println("# of Possible Challenges: " + posChals.size());
-				}
-			}
-		});
-		this.hardToggle.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (hardOn == false)
-				{
-					for (int i = 0; i < hardChallenges.length; i++)
-					{
-						posChals.add(hardChallenges[i]);
-					}
-					hardOn = true;
-					optionsSeedMessage.setText("Enabled " + hardChallenges.length + " hard challenges.");
-					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
-					System.out.println("hardOn set to: " + hardOn);
-					System.out.println("# of Possible Challenges: " + posChals.size());
-				}
-				else
-				{
-					for (int i = 0; i < hardChallenges.length; i++)
-					{
-						posChals.remove(hardChallenges[i]);
-					}
-					hardOn = false;
-					optionsSeedMessage.setText("Disabled " + hardChallenges.length + " hard challenges.");
-					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
-					System.out.println("hardOn set to: " + hardOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
 			}
@@ -559,6 +612,13 @@ public class Options
         	public void actionPerformed(ActionEvent e)
         	{
         		openAdvancedEasyEnablerMenu();
+            }
+        });
+        medMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		openAdvancedMedEnablerMenu();
             }
         });
 	}
@@ -1171,6 +1231,620 @@ public void actionPerformed(ActionEvent e)
 							}
 						}
 						optionsSeedMessage.setText("Removed an item from EASY challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+	}
+
+	public void openAdvancedMedEnablerMenu()
+	{
+        advancedMenuPanel.add(m1);
+        advancedMenuPanel.add(m2);
+        advancedMenuPanel.add(m3);
+        advancedMenuPanel.add(m4);
+        advancedMenuPanel.add(m5);
+        advancedMenuPanel.add(m6);
+        advancedMenuPanel.add(m7);
+        advancedMenuPanel.add(m8);
+        advancedMenuPanel.add(m9);
+        advancedMenuPanel.add(m10);
+        advancedMenuPanel.add(m11);
+        advancedMenuPanel.add(m12);
+        advancedMenuPanel.add(m13);
+        advancedMenuPanel.add(m14);
+        advancedMenuPanel.add(m15);
+        advancedMenuPanel.add(m16);
+        advancedMenuPanel.add(m17);
+        advancedMenuPanel.add(m18);
+        advancedMenuPanel.add(m19);
+        advancedMenuPanel.add(m20);
+
+        advancedMenuFrame.pack();
+		
+
+
+		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
+		m1.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m1.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[0]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[0]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m1.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[0]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[0]); b++)
+							{
+								posChals.remove(medChallenges[0]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		m2.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+					System.out.println("m2 working");
+        			if (m2.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[1]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[1]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m2.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[1]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[1]); b++)
+							{
+								posChals.remove(medChallenges[1]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   m3.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("m3 working");
+			if (m3.isSelected() == true)
+			{
+				if (posChals.countOccurences(medChallenges[2]) == 0)
+				{
+					if (medToggle.isSelected() == true)
+					{
+						posChals.add(medChallenges[2]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to med challenge pool.");
+			}
+			if (m3.isSelected() == false)
+			{
+				if (posChals.countOccurences(medChallenges[2]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(medChallenges[2]); b++)
+					{
+						posChals.remove(medChallenges[2]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from med challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   m4.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+					System.out.println("m4 working");
+        			if (m4.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[3]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[3]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m4.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[3]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[3]); b++)
+							{
+								posChals.remove(medChallenges[3]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   m5.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("m5 working");
+			if (m5.isSelected() == true)
+			{
+				if (posChals.countOccurences(medChallenges[4]) == 0)
+				{
+					if (medToggle.isSelected() == true)
+					{
+						posChals.add(medChallenges[4]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to med challenge pool.");
+			}
+			if (m5.isSelected() == false)
+			{
+				if (posChals.countOccurences(medChallenges[4]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(medChallenges[4]); b++)
+					{
+						posChals.remove(medChallenges[4]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from med challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+	m6.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m6.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[5]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[5]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m6.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[5]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[5]); b++)
+							{
+								posChals.remove(medChallenges[5]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});	
+		   m7.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			if (m7.isSelected() == true)
+			{
+				if (posChals.countOccurences(medChallenges[6]) == 0)
+				{
+					if (medToggle.isSelected() == true)
+					{
+						posChals.add(medChallenges[6]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to med challenge pool.");
+			}
+			if (m7.isSelected() == false)
+			{
+				if (posChals.countOccurences(medChallenges[6]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(medChallenges[6]); b++)
+					{
+						posChals.remove(medChallenges[6]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from med challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   m8.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m8.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[7]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[7]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m8.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[7]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[7]); b++)
+							{
+								posChals.remove(medChallenges[7]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   m9.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			if (m9.isSelected() == true)
+			{
+				if (posChals.countOccurences(medChallenges[8]) == 0)
+				{
+					if (medToggle.isSelected() == true)
+					{
+						posChals.add(medChallenges[8]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to med challenge pool.");
+			}
+			if (m9.isSelected() == false)
+			{
+				if (posChals.countOccurences(medChallenges[8]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(medChallenges[8]); b++)
+					{
+						posChals.remove(medChallenges[8]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from med challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   m10.addActionListener(new ActionListener()
+   {
+public void actionPerformed(ActionEvent e)
+{
+	if (m10.isSelected() == true)
+	{
+		if (posChals.countOccurences(medChallenges[9]) == 0)
+		{
+			if (medToggle.isSelected() == true)
+			{
+				posChals.add(medChallenges[9]);
+			}
+		}
+		optionsSeedMessage.setText("Added an item to med challenge pool.");
+	}
+	if (m10.isSelected() == false)
+	{
+		if (posChals.countOccurences(medChallenges[9]) > 0)
+		{
+			for (int b = 0; b < posChals.countOccurences(medChallenges[9]); b++)
+			{
+				posChals.remove(medChallenges[9]);
+			}
+		}
+		optionsSeedMessage.setText("Removed an item from med challenge pool.");
+	}
+	chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+}
+});
+	m11.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m11.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[10]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[10]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m11.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[10]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[10]); b++)
+							{
+								posChals.remove(medChallenges[10]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m12.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m12.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[11]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[11]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m12.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[11]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[11]); b++)
+							{
+								posChals.remove(medChallenges[11]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m13.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m13.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[12]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[12]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m13.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[12]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[12]); b++)
+							{
+								posChals.remove(medChallenges[12]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m14.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m14.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[13]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[13]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m14.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[13]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[13]); b++)
+							{
+								posChals.remove(medChallenges[13]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m15.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m15.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[14]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[14]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m15.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[14]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[14]); b++)
+							{
+								posChals.remove(medChallenges[14]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m16.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m16.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[15]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[15]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m16.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[15]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[15]); b++)
+							{
+								posChals.remove(medChallenges[15]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m17.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m17.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[16]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[16]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m17.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[16]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[16]); b++)
+							{
+								posChals.remove(medChallenges[16]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m18.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m18.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[17]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[17]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m18.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[17]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[17]); b++)
+							{
+								posChals.remove(medChallenges[17]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m19.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m19.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[18]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[18]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m19.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[18]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[18]); b++)
+							{
+								posChals.remove(medChallenges[18]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			m20.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (m20.isSelected() == true)
+					{
+						if (posChals.countOccurences(medChallenges[19]) == 0)
+						{
+							if (medToggle.isSelected() == true)
+							{
+								posChals.add(medChallenges[19]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to med challenge pool.");
+					}
+					if (m20.isSelected() == false)
+					{
+						if (posChals.countOccurences(medChallenges[19]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(medChallenges[19]); b++)
+							{
+								posChals.remove(medChallenges[19]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from med challenge pool.");
 					}
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
