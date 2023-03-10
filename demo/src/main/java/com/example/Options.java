@@ -16,7 +16,21 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 		//the enable/disable menu, with a JLabel header
 		//showing the difficulty, and the corresponding
 		//challenges below it.
-	//Add functionality to hard enablers
+		//STEPS:
+			//Disable the easyMenu and others. They are JMenuItems.
+			//Reroute all changes and additions to these (if any)
+				//to the Enable/Disable Menu. 
+					//IMPORTANT: YOU WILL
+					//WANT TO REPLACE THE JMENU ENTIRELY!
+					//USE JTABBEDPANE INSTEAD OF JMENU!!!
+			//Add JLabels as Headers for difficulty. Probably
+				//involves making additional GridLayouts or
+				//JPanels. You will most likely want to do
+				//this by setting the Menu's layout to GridLayout,
+				//or GroupLayout, then adding GridLayouts into the panel.
+				//Each will have a JLabel for Difficulty and 20 JCheckBoxes.
+			//Add a JLabel to the top of the Enabler/Disabler menu
+				//explaining instructions to user.
 	//Add functionality to custom enablers
 	//Add functionality to easy guarantees
 	//Add functionality to medium guarantees
@@ -110,17 +124,17 @@ public class Options
 			"Defeat the boss in Dragonlord Placidusax's Arena", 
 			"Equip 3 spells or incantations simultaneously", 
 			"Burn the thorns from the Erdtree", 
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""};
+			"Hard Challenge Placeholder 1",
+			"Hard Challenge Placeholder 2",
+			"Hard Challenge Placeholder 3",
+			"Hard Challenge Placeholder 4",
+			"Hard Challenge Placeholder 5",
+			"Hard Challenge Placeholder 6",
+			"Hard Challenge Placeholder 7",
+			"Hard Challenge Placeholder 8",
+			"Hard Challenge Placeholder 9",
+			"Hard Challenge Placeholder 10",
+			"Hard Challenge Placeholder 11"};
 	public String[] nightmareChallenges = new String[] {
 			"Embrace the 3 Fingers", 
 			"Enter Elphael Brace of the Haligtree", 					
@@ -169,18 +183,41 @@ public class Options
 	private JButton optionsStartAdvancedButton;
 	private JButton optionsStartAboutButton;
 	private JButton optionsStartPlayButton;
-	
-	// Enable/Disable Challenges Menu Declarations
-	private JFrame advancedMenuFrame;
-	private JPanel advancedMenuPanel;
-	private GridLayout advancedMenuLayout;
-	private JMenuBar advancedMenuBar;
-	private JMenu enableMenu;
-	private JMenu guaranteeMenu;
-	private JMenuItem easyMenu;
-	private JMenuItem medMenu;
-	private JMenuItem hardMenu;
-	private JMenuItem customMenu;
+
+	//Advanced Options Menu Declarations
+		//Overall Window
+	private JFrame advMenuFrame;
+	private JTabbedPane advMenuTabbedPane;
+	private JPanel advMenuEnablerPanel;
+	private JPanel advMenuGuaranteePanel;
+	private GridLayout advMenuEasyLayout;
+	private GridLayout advMenuMedLayout;
+	private GridLayout advMenuHardLayout;
+	private GridLayout advMenuCustLayout;
+		//Enabler Menu Window
+	private JPanel advMenuEnablerMessagePanel;
+	private JLabel advMenuEnablerMessage;
+	private GroupLayout advMenuEnablerLayout;
+	private JLabel advMenuEnablerEasyLabel;		
+	private JLabel advMenuEnablerMedLabel;
+	private JLabel advMenuEnablerHardLabel;
+	private JLabel advMenuEnablerCustLabel;
+	private JCheckBox advMenuEnablerEasyCheckBox;
+	private JCheckBox advMenuEnablerMedCheckBox;
+	private JCheckBox advMenuEnablerHardCheckBox;
+	private JCheckBox advMenuEnablerCustCheckBox;
+	private JPanel advMenuEnablerEasyTopPanel;	
+	private JPanel advMenuEnablerMedTopPanel;
+	private JPanel advMenuEnablerHardTopPanel;
+	private JPanel advMenuEnablerCustTopPanel;
+	private GroupLayout advMenuEnablerEasyTopLayout;
+	private GroupLayout advMenuEnablerMedTopLayout;
+	private GroupLayout advMenuEnablerHardTopLayout;
+	private GroupLayout advMenuEnablerCustTopLayout;
+	private JPanel advMenuEnablerEasyPanel;
+	private JPanel advMenuEnablerMedPanel;
+	private JPanel advMenuEnablerHardPanel;
+	private JPanel advMenuEnablerCustPanel;
 
 	// easyMenu button declarations
 	private JCheckBox e1;
@@ -435,6 +472,14 @@ public class Options
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				if (easyToggle.isSelected() == true)
+				{
+					advMenuEnablerEasyCheckBox.setSelected(true);
+				}
+				else if (easyToggle.isSelected() == false)
+				{
+					advMenuEnablerEasyCheckBox.setSelected(false);
+				}
 				if (easyOn == false)
 				{
 					for (int i = 0; i < easyChallenges.length; i++)
@@ -482,6 +527,14 @@ public class Options
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				if (medToggle.isSelected() == true)
+				{
+					advMenuEnablerMedCheckBox.setSelected(true);
+				}
+				else if (medToggle.isSelected() == false)
+				{
+					advMenuEnablerMedCheckBox.setSelected(false);
+				}
 				if (medOn == false)
 				{
 					for (int i = 0; i < medChallenges.length; i++)
@@ -536,6 +589,14 @@ public class Options
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				if (hardToggle.isSelected() == true)
+				{
+					advMenuEnablerHardCheckBox.setSelected(true);
+				}
+				else if (hardToggle.isSelected() == false)
+				{
+					advMenuEnablerHardCheckBox.setSelected(false);
+				}
 				if (hardOn == false)
 				{
 					for (int i = 0; i < hardChallenges.length; i++)
@@ -712,6 +773,7 @@ public class Options
         	}
         });
 
+		//Options START Panel
 		optionsStartPanel = new JPanel();
 		optionsFrame.add(optionsStartPanel, BorderLayout.LINE_END);
 		optionsStartAdvancedButton = new JButton("Advanced Settings");
@@ -761,78 +823,344 @@ public class Options
 
 	public void openAdvancedOptions()
 	{
-		// Creates the Advanced Options Window and displays it.
-        advancedMenuFrame = new JFrame("[=] JMenuBar [=]");
-        advancedMenuBar = new JMenuBar();
-        advancedMenuFrame.setJMenuBar(advancedMenuBar);
-        advancedMenuPanel = new JPanel();
-        advancedMenuFrame.add(advancedMenuPanel);
-        advancedMenuLayout = new GridLayout(10, 3);
-        advancedMenuPanel.setLayout(advancedMenuLayout);
-        advancedMenuFrame.setSize(500, 500);
-        advancedMenuFrame.setVisible(true);
-        enableMenu = new JMenu("[View/Toggle Challenges]");
-        guaranteeMenu = new JMenu("[Guarantee Challenges]");
-        advancedMenuBar.add(enableMenu);
-        advancedMenuBar.add(guaranteeMenu);
-        easyMenu = new JMenuItem("Easy Challenges");
-        medMenu = new JMenuItem("Medium Challenges");
-        hardMenu = new JMenuItem("Hard Challenges");
-        customMenu = new JMenuItem("Custom Challenges");
-        enableMenu.add(easyMenu);
-        enableMenu.add(medMenu);
-        enableMenu.add(hardMenu);
-        enableMenu.add(customMenu);
+		//Creates the Advanced Options Window and displays it.
+		advMenuFrame = new JFrame();
+		advMenuTabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+		advMenuFrame.add(advMenuTabbedPane);
+		advMenuEnablerPanel = new JPanel();
+		advMenuGuaranteePanel = new JPanel();
+		advMenuTabbedPane.add("[ENABLE/DISABLE CHALLENGES]", advMenuEnablerPanel);
+		advMenuTabbedPane.add("[GUARANTEE CHALLENGES]", advMenuGuaranteePanel);
+		advMenuFrame.setSize(1000,1000);
+		advMenuFrame.setLocation(100,100);
+        advMenuFrame.setVisible(true);
+		advMenuEasyLayout = new GridLayout(5, 4);
+		advMenuMedLayout = new GridLayout(5, 4);
+		advMenuHardLayout = new GridLayout(5, 4);
+		advMenuCustLayout = new GridLayout(5, 4);
 
-        //ACTION LISTENERS
-        easyMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-        		openAdvancedEasyEnablerMenu();
-            }
-        });
-        medMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-        		openAdvancedMedEnablerMenu();
-            }
-        });
-		hardMenu.addActionListener(new ActionListener()
-        {
-        	public void actionPerformed(ActionEvent e)
-        	{
-        		openAdvancedHardEnablerMenu();
-            }
-        });
+		//Creates and formats the Enabler/Disabler Menu Window
+		advMenuEnablerMessagePanel = new JPanel();
+		advMenuEnablerMessage = new JLabel("Select Challenges to add or remove them" + 
+											" from their respective challenge pools.");
+		advMenuEnablerMessagePanel.add(advMenuEnablerMessage, BorderLayout.CENTER);
+		advMenuEnablerMessagePanel.setBackground(Color.CYAN);
+		advMenuEnablerMessagePanel.setMinimumSize(new Dimension(50, 25));
+		advMenuEnablerMessagePanel.setPreferredSize(new Dimension(50, 25));
+		advMenuEnablerMessagePanel.setMaximumSize(new Dimension(Short.MAX_VALUE,
+                                  Short.MAX_VALUE));
+		advMenuEnablerCustLabel = new JLabel("Custom Challenges");
+		advMenuEnablerCustPanel = new JPanel();
+			//EASY SECTION
+		advMenuEnablerEasyLabel = new JLabel("[Easy Challenges]");
+		advMenuEnablerEasyCheckBox = new JCheckBox("Enable Easy Challenges");
+		advMenuEnablerEasyTopPanel = new JPanel();
+		advMenuEnablerEasyTopPanel.setMinimumSize(new Dimension(50, 35));
+		advMenuEnablerEasyTopPanel.setPreferredSize(new Dimension(50, 35));
+		advMenuEnablerEasyTopPanel.setMaximumSize(new Dimension(Short.MAX_VALUE,
+                                  Short.MAX_VALUE));
+		advMenuEnablerEasyTopLayout = new GroupLayout(advMenuEnablerEasyTopPanel);
+		advMenuEnablerEasyTopPanel.setLayout(advMenuEnablerEasyTopLayout);
+		advMenuEnablerEasyTopLayout.setAutoCreateGaps(true);
+		advMenuEnablerEasyTopLayout.setAutoCreateContainerGaps(true);
+		advMenuEnablerEasyTopLayout.setHorizontalGroup(
+			advMenuEnablerEasyTopLayout.createSequentialGroup()
+					.addComponent(advMenuEnablerEasyLabel)
+					.addComponent(advMenuEnablerEasyCheckBox)
+		);
+		advMenuEnablerEasyTopLayout.setVerticalGroup(
+			advMenuEnablerEasyTopLayout.createSequentialGroup()
+					.addGroup(advMenuEnablerEasyTopLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(advMenuEnablerEasyLabel)
+							.addComponent(advMenuEnablerEasyCheckBox))
+		);
+		advMenuEnablerEasyPanel = new JPanel();
+		advMenuEnablerEasyPanel.setLayout(advMenuEasyLayout);
+		openAdvancedEasyEnablerMenu();	
+			//MEDIUM SECTION
+		advMenuEnablerMedLabel = new JLabel("[Medium Challenges]");
+		advMenuEnablerMedCheckBox = new JCheckBox("Enable Medium Challenges");
+		advMenuEnablerMedTopPanel = new JPanel();
+		advMenuEnablerMedTopPanel.setMinimumSize(new Dimension(50, 35));
+		advMenuEnablerMedTopPanel.setPreferredSize(new Dimension(50, 35));
+		advMenuEnablerMedTopPanel.setMaximumSize(new Dimension(Short.MAX_VALUE,
+								  Short.MAX_VALUE));
+		advMenuEnablerMedTopLayout = new GroupLayout(advMenuEnablerMedTopPanel);
+		advMenuEnablerMedTopPanel.setLayout(advMenuEnablerMedTopLayout);
+		advMenuEnablerMedTopLayout.setAutoCreateGaps(true);
+		advMenuEnablerMedTopLayout.setAutoCreateContainerGaps(true);
+		advMenuEnablerMedTopLayout.setHorizontalGroup(
+			advMenuEnablerMedTopLayout.createSequentialGroup()
+					.addComponent(advMenuEnablerMedLabel)
+					.addComponent(advMenuEnablerMedCheckBox)
+		);
+		advMenuEnablerMedTopLayout.setVerticalGroup(
+			advMenuEnablerMedTopLayout.createSequentialGroup()
+					.addGroup(advMenuEnablerMedTopLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(advMenuEnablerMedLabel)
+							.addComponent(advMenuEnablerMedCheckBox))
+		);
+		advMenuEnablerMedPanel = new JPanel();
+		advMenuEnablerMedPanel.setLayout(advMenuMedLayout);
+		openAdvancedMedEnablerMenu();	
+			//HARD SECTION
+		advMenuEnablerHardLabel = new JLabel("[Hard Challenges]");
+		advMenuEnablerHardCheckBox = new JCheckBox("Enable Hard Challenges");
+		advMenuEnablerHardTopPanel = new JPanel();
+		advMenuEnablerHardTopPanel.setMinimumSize(new Dimension(50, 35));
+		advMenuEnablerHardTopPanel.setPreferredSize(new Dimension(50, 35));
+		advMenuEnablerHardTopPanel.setMaximumSize(new Dimension(Short.MAX_VALUE,
+								  Short.MAX_VALUE));
+		advMenuEnablerHardTopLayout = new GroupLayout(advMenuEnablerHardTopPanel);
+		advMenuEnablerHardTopPanel.setLayout(advMenuEnablerHardTopLayout);
+		advMenuEnablerHardTopLayout.setAutoCreateGaps(true);
+		advMenuEnablerHardTopLayout.setAutoCreateContainerGaps(true);
+		advMenuEnablerHardTopLayout.setHorizontalGroup(
+			advMenuEnablerHardTopLayout.createSequentialGroup()
+					.addComponent(advMenuEnablerHardLabel)
+					.addComponent(advMenuEnablerHardCheckBox)
+		);
+		advMenuEnablerHardTopLayout.setVerticalGroup(
+			advMenuEnablerHardTopLayout.createSequentialGroup()
+					.addGroup(advMenuEnablerHardTopLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(advMenuEnablerHardLabel)
+							.addComponent(advMenuEnablerHardCheckBox))
+		);
+		advMenuEnablerHardPanel = new JPanel();
+		advMenuEnablerHardPanel.setLayout(advMenuHardLayout);
+		openAdvancedHardEnablerMenu();
+			//CUSTOM SECTION
+			//FINISHING TOUCHES
+		advMenuEnablerLayout = new GroupLayout(advMenuEnablerPanel);
+		advMenuEnablerPanel.setLayout(advMenuEnablerLayout);
+		advMenuEnablerLayout.setAutoCreateGaps(true);
+		advMenuEnablerLayout.setAutoCreateContainerGaps(true);
+		advMenuEnablerLayout.setHorizontalGroup(
+				advMenuEnablerLayout.createSequentialGroup()
+					.addGroup(advMenuEnablerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+							.addComponent(advMenuEnablerMessagePanel)
+							.addComponent(advMenuEnablerEasyTopPanel)
+							.addComponent(advMenuEnablerEasyPanel)
+							.addComponent(advMenuEnablerMedTopPanel)
+							.addComponent(advMenuEnablerMedPanel)
+							.addComponent(advMenuEnablerHardTopPanel)
+							.addComponent(advMenuEnablerHardPanel)
+							.addComponent(advMenuEnablerCustPanel))
+		);
+		advMenuEnablerLayout.setVerticalGroup(
+				advMenuEnablerLayout.createSequentialGroup()
+					.addComponent(advMenuEnablerMessagePanel)
+					.addComponent(advMenuEnablerEasyTopPanel)
+					.addComponent(advMenuEnablerEasyPanel)
+					.addComponent(advMenuEnablerMedTopPanel)
+					.addComponent(advMenuEnablerMedPanel)
+					.addComponent(advMenuEnablerHardTopPanel)
+					.addComponent(advMenuEnablerHardPanel)
+					.addComponent(advMenuEnablerCustPanel)
+		);
+		addEnablerMenuTopPanelActionListeners();
+		advMenuFrame.pack();
+	}
+
+	public void addEnablerMenuTopPanelActionListeners()
+	{
+		this.advMenuEnablerEasyCheckBox.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (advMenuEnablerEasyCheckBox.isSelected() == true)
+				{
+					easyToggle.setSelected(true);
+				}
+				else if (advMenuEnablerEasyCheckBox.isSelected() == false)
+				{
+					easyToggle.setSelected(false);
+				}
+				if (easyOn == false)
+				{
+					for (int i = 0; i < easyChallenges.length; i++)
+					{
+						if (easyEnablerButtons[i].isSelected() == true)
+						{
+							posChals.add(easyChallenges[i]);
+						}
+					}
+					easyOn = true;
+					dispEasyCount = 0;
+					for (int p = 0; p < easyEnablerButtons.length; p++)
+					{
+						dispEasyCount += (posChals.countOccurences(easyChallenges[p]));
+					}
+					optionsSeedMessage.setText("Enabled " + dispEasyCount + " easy challenges.");
+					dispEasyCount = 0;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("easyOn set to: " + easyOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+				else
+				{
+					dispEasyCount = 0;
+					for (int p = 0; p < easyEnablerButtons.length; p++)
+					{
+						dispEasyCount += (posChals.countOccurences(easyChallenges[p]));
+					}
+					optionsSeedMessage.setText("Removed " + dispEasyCount + " easy challenges.");
+					for (int i = 0; i < easyChallenges.length; i++)
+					{
+						if (easyEnablerButtons[i].isSelected() == true)
+						{
+							posChals.remove(easyChallenges[i]);
+						}
+					}
+					easyOn = false;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("easyOn set to: " + easyOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+			}
+		});
+		this.advMenuEnablerMedCheckBox.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (advMenuEnablerMedCheckBox.isSelected() == true)
+				{
+					medToggle.setSelected(true);
+				}
+				else if (advMenuEnablerMedCheckBox.isSelected() == false)
+				{
+					medToggle.setSelected(false);
+				}
+				if (medOn == false)
+				{
+					for (int i = 0; i < medChallenges.length; i++)
+					{
+						if (medEnablerButtons[i].isSelected() == true)
+						{
+							posChals.add(medChallenges[i]);
+						}
+					}
+					medOn = true;
+					dispMedCount = 0;
+					for (int p = 0; p < medEnablerButtons.length; p++)
+					{
+						dispMedCount += (posChals.countOccurences(medChallenges[p]));
+					}
+					optionsSeedMessage.setText("Enabled " + dispMedCount + " medium challenges.");
+					dispMedCount = 0;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("medOn set to: " + medOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+				else
+				{
+					dispMedCount = 0;
+					for (int p = 0; p < medEnablerButtons.length; p++)
+					{
+						dispMedCount += (posChals.countOccurences(medChallenges[p]));
+					}
+					optionsSeedMessage.setText("Removed " + dispMedCount + " medium challenges.");
+					for (int i = 0; i < medChallenges.length; i++)
+					{
+						if (medEnablerButtons[i].isSelected() == true)
+						{
+							posChals.remove(medChallenges[i]);
+						}
+					}
+					medOn = false;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("medOn set to: " + medOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+			}
+		});
+		this.advMenuEnablerHardCheckBox.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (advMenuEnablerHardCheckBox.isSelected() == true)
+				{
+					hardToggle.setSelected(true);
+				}
+				else if (advMenuEnablerHardCheckBox.isSelected() == false)
+				{
+					hardToggle.setSelected(false);
+				}
+				if (hardOn == false)
+				{
+					for (int i = 0; i < hardChallenges.length; i++)
+					{
+						if (hardEnablerButtons[i].isSelected() == true)
+						{
+							posChals.add(hardChallenges[i]);
+						}
+					}
+					hardOn = true;
+					dispHardCount = 0;
+					for (int p = 0; p < hardEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(hardChallenges[p]) > 0)
+						{
+							dispHardCount++;
+						}
+					}
+					optionsSeedMessage.setText("Enabled " + dispHardCount + " hard challenges.");
+					dispHardCount = 0;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("hardOn set to: " + hardOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+				else
+				{
+					dispHardCount = 0;
+					for (int p = 0; p < hardEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(hardChallenges[p]) > 0)
+						{
+							dispHardCount++;
+						}
+					}
+					optionsSeedMessage.setText("Removed " + dispHardCount + " hard challenges.");
+					dispHardCount = 0;
+					for (int i = 0; i < hardChallenges.length; i++)
+					{
+						if (hardEnablerButtons[i].isSelected() == true)
+						{
+							posChals.remove(hardChallenges[i]);
+						}
+					}
+					hardOn = false;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("hardOn set to: " + hardOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+			}
+		});
 	}
 
 	public void openAdvancedEasyEnablerMenu()
 	{
-        advancedMenuPanel.add(e1);
-        advancedMenuPanel.add(e2);
-        advancedMenuPanel.add(e3);
-        advancedMenuPanel.add(e4);
-        advancedMenuPanel.add(e5);
-        advancedMenuPanel.add(e6);
-        advancedMenuPanel.add(e7);
-        advancedMenuPanel.add(e8);
-        advancedMenuPanel.add(e9);
-        advancedMenuPanel.add(e10);
-        advancedMenuPanel.add(e11);
-        advancedMenuPanel.add(e12);
-        advancedMenuPanel.add(e13);
-        advancedMenuPanel.add(e14);
-        advancedMenuPanel.add(e15);
-        advancedMenuPanel.add(e16);
-        advancedMenuPanel.add(e17);
-        advancedMenuPanel.add(e18);
-        advancedMenuPanel.add(e19);
-        advancedMenuPanel.add(e20);
+        advMenuEnablerEasyPanel.add(e1);
+        advMenuEnablerEasyPanel.add(e2);
+        advMenuEnablerEasyPanel.add(e3);
+        advMenuEnablerEasyPanel.add(e4);
+        advMenuEnablerEasyPanel.add(e5);
+        advMenuEnablerEasyPanel.add(e6);
+        advMenuEnablerEasyPanel.add(e7);
+        advMenuEnablerEasyPanel.add(e8);
+        advMenuEnablerEasyPanel.add(e9);
+        advMenuEnablerEasyPanel.add(e10);
+        advMenuEnablerEasyPanel.add(e11);
+        advMenuEnablerEasyPanel.add(e12);
+        advMenuEnablerEasyPanel.add(e13);
+        advMenuEnablerEasyPanel.add(e14);
+        advMenuEnablerEasyPanel.add(e15);
+        advMenuEnablerEasyPanel.add(e16);
+        advMenuEnablerEasyPanel.add(e17);
+        advMenuEnablerEasyPanel.add(e18);
+        advMenuEnablerEasyPanel.add(e19);
+        advMenuEnablerEasyPanel.add(e20);
 
-        advancedMenuFrame.pack();
-		
 
 
 		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
@@ -869,7 +1197,6 @@ public class Options
        	   	 {
         		public void actionPerformed(ActionEvent e)
         		{
-					System.out.println("e2 working");
         			if (e2.isSelected() == true)
 					{
 						if (posChals.countOccurences(easyChallenges[1]) == 0)
@@ -899,7 +1226,6 @@ public class Options
 		   {
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("e3 working");
 			if (e3.isSelected() == true)
 			{
 				if (posChals.countOccurences(easyChallenges[2]) == 0)
@@ -929,7 +1255,6 @@ public class Options
        	   	 {
         		public void actionPerformed(ActionEvent e)
         		{
-					System.out.println("e4 working");
         			if (e4.isSelected() == true)
 					{
 						if (posChals.countOccurences(easyChallenges[3]) == 0)
@@ -959,7 +1284,6 @@ public class Options
 		   {
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("e5 working");
 			if (e5.isSelected() == true)
 			{
 				if (posChals.countOccurences(easyChallenges[4]) == 0)
@@ -1424,28 +1748,28 @@ public void actionPerformed(ActionEvent e)
 
 	public void openAdvancedMedEnablerMenu()
 	{
-        advancedMenuPanel.add(m1);
-        advancedMenuPanel.add(m2);
-        advancedMenuPanel.add(m3);
-        advancedMenuPanel.add(m4);
-        advancedMenuPanel.add(m5);
-        advancedMenuPanel.add(m6);
-        advancedMenuPanel.add(m7);
-        advancedMenuPanel.add(m8);
-        advancedMenuPanel.add(m9);
-        advancedMenuPanel.add(m10);
-        advancedMenuPanel.add(m11);
-        advancedMenuPanel.add(m12);
-        advancedMenuPanel.add(m13);
-        advancedMenuPanel.add(m14);
-        advancedMenuPanel.add(m15);
-        advancedMenuPanel.add(m16);
-        advancedMenuPanel.add(m17);
-        advancedMenuPanel.add(m18);
-        advancedMenuPanel.add(m19);
-        advancedMenuPanel.add(m20);
+        advMenuEnablerMedPanel.add(m1);
+        advMenuEnablerMedPanel.add(m2);
+        advMenuEnablerMedPanel.add(m3);
+        advMenuEnablerMedPanel.add(m4);
+        advMenuEnablerMedPanel.add(m5);
+        advMenuEnablerMedPanel.add(m6);
+        advMenuEnablerMedPanel.add(m7);
+        advMenuEnablerMedPanel.add(m8);
+        advMenuEnablerMedPanel.add(m9);
+        advMenuEnablerMedPanel.add(m10);
+        advMenuEnablerMedPanel.add(m11);
+        advMenuEnablerMedPanel.add(m12);
+        advMenuEnablerMedPanel.add(m13);
+        advMenuEnablerMedPanel.add(m14);
+        advMenuEnablerMedPanel.add(m15);
+        advMenuEnablerMedPanel.add(m16);
+        advMenuEnablerMedPanel.add(m17);
+        advMenuEnablerMedPanel.add(m18);
+        advMenuEnablerMedPanel.add(m19);
+        advMenuEnablerMedPanel.add(m20);
 
-        advancedMenuFrame.pack();
+        advMenuFrame.pack();
 		
 
 
@@ -1483,7 +1807,6 @@ public void actionPerformed(ActionEvent e)
        	   	 {
         		public void actionPerformed(ActionEvent e)
         		{
-					System.out.println("m2 working");
         			if (m2.isSelected() == true)
 					{
 						if (posChals.countOccurences(medChallenges[1]) == 0)
@@ -1513,7 +1836,6 @@ public void actionPerformed(ActionEvent e)
 		   {
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("m3 working");
 			if (m3.isSelected() == true)
 			{
 				if (posChals.countOccurences(medChallenges[2]) == 0)
@@ -1543,7 +1865,6 @@ public void actionPerformed(ActionEvent e)
        	   	 {
         		public void actionPerformed(ActionEvent e)
         		{
-					System.out.println("m4 working");
         			if (m4.isSelected() == true)
 					{
 						if (posChals.countOccurences(medChallenges[3]) == 0)
@@ -1573,7 +1894,6 @@ public void actionPerformed(ActionEvent e)
 		   {
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("m5 working");
 			if (m5.isSelected() == true)
 			{
 				if (posChals.countOccurences(medChallenges[4]) == 0)
@@ -2038,28 +2358,28 @@ public void actionPerformed(ActionEvent e)
 
 	public void openAdvancedHardEnablerMenu()
 	{
-        advancedMenuPanel.add(h1);
-        advancedMenuPanel.add(h2);
-        advancedMenuPanel.add(h3);
-        advancedMenuPanel.add(h4);
-        advancedMenuPanel.add(h5);
-        advancedMenuPanel.add(h6);
-        advancedMenuPanel.add(h7);
-        advancedMenuPanel.add(h8);
-        advancedMenuPanel.add(h9);
-        advancedMenuPanel.add(h10);
-        advancedMenuPanel.add(h11);
-        advancedMenuPanel.add(h12);
-        advancedMenuPanel.add(h13);
-        advancedMenuPanel.add(h14);
-        advancedMenuPanel.add(h15);
-        advancedMenuPanel.add(h16);
-        advancedMenuPanel.add(h17);
-        advancedMenuPanel.add(h18);
-        advancedMenuPanel.add(h19);
-        advancedMenuPanel.add(h20);
+        advMenuEnablerHardPanel.add(h1);
+        advMenuEnablerHardPanel.add(h2);
+        advMenuEnablerHardPanel.add(h3);
+        advMenuEnablerHardPanel.add(h4);
+        advMenuEnablerHardPanel.add(h5);
+        advMenuEnablerHardPanel.add(h6);
+        advMenuEnablerHardPanel.add(h7);
+        advMenuEnablerHardPanel.add(h8);
+        advMenuEnablerHardPanel.add(h9);
+        advMenuEnablerHardPanel.add(h10);
+        advMenuEnablerHardPanel.add(h11);
+        advMenuEnablerHardPanel.add(h12);
+        advMenuEnablerHardPanel.add(h13);
+        advMenuEnablerHardPanel.add(h14);
+        advMenuEnablerHardPanel.add(h15);
+        advMenuEnablerHardPanel.add(h16);
+        advMenuEnablerHardPanel.add(h17);
+        advMenuEnablerHardPanel.add(h18);
+        advMenuEnablerHardPanel.add(h19);
+        advMenuEnablerHardPanel.add(h20);
 
-        advancedMenuFrame.pack();
+        advMenuFrame.pack();
 		
 
 
@@ -2097,7 +2417,6 @@ public void actionPerformed(ActionEvent e)
        	   	 {
         		public void actionPerformed(ActionEvent e)
         		{
-					System.out.println("h2 working");
         			if (h2.isSelected() == true)
 					{
 						if (posChals.countOccurences(hardChallenges[1]) == 0)
@@ -2127,7 +2446,6 @@ public void actionPerformed(ActionEvent e)
 		   {
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("h3 working");
 			if (h3.isSelected() == true)
 			{
 				if (posChals.countOccurences(hardChallenges[2]) == 0)
@@ -2157,7 +2475,6 @@ public void actionPerformed(ActionEvent e)
        	   	 {
         		public void actionPerformed(ActionEvent e)
         		{
-					System.out.println("h4 working");
         			if (h4.isSelected() == true)
 					{
 						if (posChals.countOccurences(hardChallenges[3]) == 0)
@@ -2187,7 +2504,6 @@ public void actionPerformed(ActionEvent e)
 		   {
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("h5 working");
 			if (h5.isSelected() == true)
 			{
 				if (posChals.countOccurences(hardChallenges[4]) == 0)
