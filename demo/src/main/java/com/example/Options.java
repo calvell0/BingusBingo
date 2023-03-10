@@ -10,7 +10,43 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+//TODO LIST
+	//Reformat enabler menu: Instead of a menu for each
+		//difficulty, place all challenges directly into
+		//the enable/disable menu, with a JLabel header
+		//showing the difficulty, and the corresponding
+		//challenges below it.
+	//Add functionality to hard enablers
+	//Add functionality to custom enablers
+	//Add functionality to easy guarantees
+	//Add functionality to medium guarantees
+	//Add functionality to hard guarantees
+	//Add functionality to custom guarantees
 
+//HOW TO ADD NEW CHALLENGES TO THE EASY/MED/HARD POOLS:
+	//Add a new JCheckBox declaration, with the first letter
+		//of the difficulty (e,m,h,c). The areas for this
+		//are near the top of the options class.
+	//Initialize a new String containing the challenge to the String
+		//array of the corresponding diffulty. They are located
+		//at the very top of the Options class.
+	//In the Options constructor, called public Options{}, find the
+		//section of code with a comment on the top saying 
+		//Initialize (difficulty)EnablerMenuButtons with the
+		//corresponding difficulty of your challenge. Initialize
+		//your challenge using the same format as the other
+		//JCheckBoxes. You can just copy and paste the last one
+		//and replace the number in the square brackets with the
+		//number in the square brackets of the line above and add 1.
+		//Then add your JCheckBoxes name, 
+		//(first letter of difficulty)(number of challenge) ex)e21.
+	//Add the JCheckBox to the menu of the corresponding difficulty
+		//in the advancedOptionsEnablerMenu methods.
+	//Copy and paste one of the action listeners from the same method.
+		//Replace all instances of its JCheckBox name with your own
+		//JCheckBox's name, and all numbers in square brackets with
+		//the number you used in the square brackets a couple steps ago.
+	//Save and run!
 
 public class Options
 {
@@ -19,6 +55,8 @@ public class Options
 	public CustChalBag customChallenges;
 	public JCheckBox[] easyEnablerButtons;
 	public JCheckBox[] medEnablerButtons;
+	public JCheckBox[] hardEnablerButtons;
+	public JCheckBox[] custEnablerButtons;
 	public String[] easyChallenges = new String[] { 
 			"Assassinate Patches", 
 			"Acquire a legendary armament", 
@@ -71,7 +109,18 @@ public class Options
 			"Defeat Malenia", 						
 			"Defeat the boss in Dragonlord Placidusax's Arena", 
 			"Equip 3 spells or incantations simultaneously", 
-			"Burn the thorns from the Erdtree"};
+			"Burn the thorns from the Erdtree", 
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""};
 	public String[] nightmareChallenges = new String[] {
 			"Embrace the 3 Fingers", 
 			"Enter Elphael Brace of the Haligtree", 					
@@ -177,6 +226,50 @@ public class Options
 	private JCheckBox m19;
 	private JCheckBox m20;
 	
+	//hardMenu button declarations
+	private JCheckBox h1;
+	private JCheckBox h2;
+	private JCheckBox h3;
+	private JCheckBox h4;
+	private JCheckBox h5;
+	private JCheckBox h6;
+	private JCheckBox h7;
+	private JCheckBox h8;
+	private JCheckBox h9;
+	private JCheckBox h10;
+	private JCheckBox h11;
+	private JCheckBox h12;
+	private JCheckBox h13;
+	private JCheckBox h14;
+	private JCheckBox h15;
+	private JCheckBox h16;
+	private JCheckBox h17;
+	private JCheckBox h18;
+	private JCheckBox h19;
+	private JCheckBox h20;
+
+	//custMenu button declarations
+	private JCheckBox c1;
+	private JCheckBox c2;
+	private JCheckBox c3;
+	private JCheckBox c4;
+	private JCheckBox c5;
+	private JCheckBox c6;
+	private JCheckBox c7;
+	private JCheckBox c8;
+	private JCheckBox c9;
+	private JCheckBox c10;
+	private JCheckBox c11;
+	private JCheckBox c12;
+	private JCheckBox c13;
+	private JCheckBox c14;
+	private JCheckBox c15;
+	private JCheckBox c16;
+	private JCheckBox c17;
+	private JCheckBox c18;
+	private JCheckBox c19;
+	private JCheckBox c20;
+
 	public Options()
 	{
 		//Initializers for bags
@@ -257,6 +350,37 @@ public class Options
 			medEnablerButtons[q].setSelected(true);
 		}
 		
+		//Initialize hardEnabler menu buttons, add them to
+		//JCheckBox array hardEnablerButtons, the set them all
+		//to true by default on program startup.
+		h1 = new JCheckBox(hardChallenges[0]);
+        h2 = new JCheckBox(hardChallenges[1]);
+        h3 = new JCheckBox(hardChallenges[2]);
+        h4 = new JCheckBox(hardChallenges[3]);
+        h5 = new JCheckBox(hardChallenges[4]);
+        h6 = new JCheckBox(hardChallenges[5]);
+        h7 = new JCheckBox(hardChallenges[6]);
+        h8 = new JCheckBox(hardChallenges[7]);
+        h9 = new JCheckBox(hardChallenges[8]);
+        h10 = new JCheckBox(hardChallenges[9]);
+        h11 = new JCheckBox(hardChallenges[10]);
+        h12 = new JCheckBox(hardChallenges[11]);
+        h13 = new JCheckBox(hardChallenges[12]);
+        h14 = new JCheckBox(hardChallenges[13]);
+        h15 = new JCheckBox(hardChallenges[14]);
+        h16 = new JCheckBox(hardChallenges[15]);
+        h17 = new JCheckBox(hardChallenges[16]);
+        h18 = new JCheckBox(hardChallenges[17]);
+        h19 = new JCheckBox(hardChallenges[18]);
+        h20 = new JCheckBox(hardChallenges[19]);
+		hardEnablerButtons = new JCheckBox[] {
+			h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, 
+			h15, h16, h17, h18, h19, h20};
+		for (int q = 0; q < hardEnablerButtons.length; q++)
+		{
+			hardEnablerButtons[q].setSelected(true);
+		}
+
 		//OPTIONS frame
 		optionsFrame = new JFrame();
 		optionsFrame.setSize(800,300);
@@ -404,6 +528,60 @@ public class Options
 					medOn = false;
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("medOn set to: " + medOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+			}
+		});
+		this.hardToggle.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (hardOn == false)
+				{
+					for (int i = 0; i < hardChallenges.length; i++)
+					{
+						if (hardEnablerButtons[i].isSelected() == true)
+						{
+							posChals.add(hardChallenges[i]);
+						}
+					}
+					hardOn = true;
+					dispHardCount = 0;
+					for (int p = 0; p < hardEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(hardChallenges[p]) > 0)
+						{
+							dispHardCount++;
+						}
+					}
+					optionsSeedMessage.setText("Enabled " + dispHardCount + " hard challenges.");
+					dispHardCount = 0;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("hardOn set to: " + hardOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+				else
+				{
+					dispHardCount = 0;
+					for (int p = 0; p < hardEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(hardChallenges[p]) > 0)
+						{
+							dispHardCount++;
+						}
+					}
+					optionsSeedMessage.setText("Removed " + dispHardCount + " hard challenges.");
+					dispHardCount = 0;
+					for (int i = 0; i < hardChallenges.length; i++)
+					{
+						if (hardEnablerButtons[i].isSelected() == true)
+						{
+							posChals.remove(hardChallenges[i]);
+						}
+					}
+					hardOn = false;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("hardOn set to: " + hardOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
 			}
@@ -619,6 +797,13 @@ public class Options
         	public void actionPerformed(ActionEvent e)
         	{
         		openAdvancedMedEnablerMenu();
+            }
+        });
+		hardMenu.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		openAdvancedHardEnablerMenu();
             }
         });
 	}
@@ -1849,5 +2034,623 @@ public void actionPerformed(ActionEvent e)
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
        	});
+	}
+
+	public void openAdvancedHardEnablerMenu()
+	{
+        advancedMenuPanel.add(h1);
+        advancedMenuPanel.add(h2);
+        advancedMenuPanel.add(h3);
+        advancedMenuPanel.add(h4);
+        advancedMenuPanel.add(h5);
+        advancedMenuPanel.add(h6);
+        advancedMenuPanel.add(h7);
+        advancedMenuPanel.add(h8);
+        advancedMenuPanel.add(h9);
+        advancedMenuPanel.add(h10);
+        advancedMenuPanel.add(h11);
+        advancedMenuPanel.add(h12);
+        advancedMenuPanel.add(h13);
+        advancedMenuPanel.add(h14);
+        advancedMenuPanel.add(h15);
+        advancedMenuPanel.add(h16);
+        advancedMenuPanel.add(h17);
+        advancedMenuPanel.add(h18);
+        advancedMenuPanel.add(h19);
+        advancedMenuPanel.add(h20);
+
+        advancedMenuFrame.pack();
+		
+
+
+		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
+		h1.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h1.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[0]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[0]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h1.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[0]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[0]); b++)
+							{
+								posChals.remove(hardChallenges[0]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		h2.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+					System.out.println("h2 working");
+        			if (h2.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[1]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[1]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h2.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[1]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[1]); b++)
+							{
+								posChals.remove(hardChallenges[1]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   h3.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("h3 working");
+			if (h3.isSelected() == true)
+			{
+				if (posChals.countOccurences(hardChallenges[2]) == 0)
+				{
+					if (hardToggle.isSelected() == true)
+					{
+						posChals.add(hardChallenges[2]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+			}
+			if (h3.isSelected() == false)
+			{
+				if (posChals.countOccurences(hardChallenges[2]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(hardChallenges[2]); b++)
+					{
+						posChals.remove(hardChallenges[2]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   h4.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+					System.out.println("h4 working");
+        			if (h4.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[3]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[3]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h4.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[3]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[3]); b++)
+							{
+								posChals.remove(hardChallenges[3]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   h5.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("h5 working");
+			if (h5.isSelected() == true)
+			{
+				if (posChals.countOccurences(hardChallenges[4]) == 0)
+				{
+					if (hardToggle.isSelected() == true)
+					{
+						posChals.add(hardChallenges[4]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+			}
+			if (h5.isSelected() == false)
+			{
+				if (posChals.countOccurences(hardChallenges[4]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(hardChallenges[4]); b++)
+					{
+						posChals.remove(hardChallenges[4]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+	h6.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h6.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[5]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[5]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h6.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[5]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[5]); b++)
+							{
+								posChals.remove(hardChallenges[5]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});	
+		   h7.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			if (h7.isSelected() == true)
+			{
+				if (posChals.countOccurences(hardChallenges[6]) == 0)
+				{
+					if (hardToggle.isSelected() == true)
+					{
+						posChals.add(hardChallenges[6]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+			}
+			if (h7.isSelected() == false)
+			{
+				if (posChals.countOccurences(hardChallenges[6]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(hardChallenges[6]); b++)
+					{
+						posChals.remove(hardChallenges[6]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   h8.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h8.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[7]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[7]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h8.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[7]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[7]); b++)
+							{
+								posChals.remove(hardChallenges[7]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		   h9.addActionListener(new ActionListener()
+		   {
+		public void actionPerformed(ActionEvent e)
+		{
+			if (h9.isSelected() == true)
+			{
+				if (posChals.countOccurences(hardChallenges[8]) == 0)
+				{
+					if (hardToggle.isSelected() == true)
+					{
+						posChals.add(hardChallenges[8]);
+					}
+				}
+				optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+			}
+			if (h9.isSelected() == false)
+			{
+				if (posChals.countOccurences(hardChallenges[8]) > 0)
+				{
+					for (int b = 0; b < posChals.countOccurences(hardChallenges[8]); b++)
+					{
+						posChals.remove(hardChallenges[8]);
+					}
+				}
+				optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+			}
+			chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+		}
+   });
+   h10.addActionListener(new ActionListener()
+   {
+public void actionPerformed(ActionEvent e)
+{
+	if (h10.isSelected() == true)
+	{
+		if (posChals.countOccurences(hardChallenges[9]) == 0)
+		{
+			if (hardToggle.isSelected() == true)
+			{
+				posChals.add(hardChallenges[9]);
+			}
+		}
+		optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+	}
+	if (h10.isSelected() == false)
+	{
+		if (posChals.countOccurences(hardChallenges[9]) > 0)
+		{
+			for (int b = 0; b < posChals.countOccurences(hardChallenges[9]); b++)
+			{
+				posChals.remove(hardChallenges[9]);
+			}
+		}
+		optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+	}
+	chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+}
+});
+	h11.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h11.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[10]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[10]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h11.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[10]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[10]); b++)
+							{
+								posChals.remove(hardChallenges[10]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h12.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h12.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[11]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[11]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h12.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[11]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[11]); b++)
+							{
+								posChals.remove(hardChallenges[11]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h13.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h13.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[12]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[12]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h13.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[12]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[12]); b++)
+							{
+								posChals.remove(hardChallenges[12]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h14.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h14.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[13]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[13]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h14.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[13]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[13]); b++)
+							{
+								posChals.remove(hardChallenges[13]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h15.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h15.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[14]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[14]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h15.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[14]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[14]); b++)
+							{
+								posChals.remove(hardChallenges[14]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h16.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h16.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[15]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[15]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h16.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[15]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[15]); b++)
+							{
+								posChals.remove(hardChallenges[15]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h17.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h17.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[16]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[16]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h17.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[16]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[16]); b++)
+							{
+								posChals.remove(hardChallenges[16]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h18.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h18.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[17]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[17]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h18.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[17]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[17]); b++)
+							{
+								posChals.remove(hardChallenges[17]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h19.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h19.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[18]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[18]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h19.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[18]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[18]); b++)
+							{
+								posChals.remove(hardChallenges[18]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+			h20.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (h20.isSelected() == true)
+					{
+						if (posChals.countOccurences(hardChallenges[19]) == 0)
+						{
+							if (hardToggle.isSelected() == true)
+							{
+								posChals.add(hardChallenges[19]);
+							}
+						}
+						optionsSeedMessage.setText("Added an item to HARD challenge pool.");
+					}
+					if (h20.isSelected() == false)
+					{
+						if (posChals.countOccurences(hardChallenges[19]) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(hardChallenges[19]); b++)
+							{
+								posChals.remove(hardChallenges[19]);
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from HARD challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+
+		//VSC CRAZY
+		//I was control+f replacing each e# in this method with h# and after like
+		//8 times it just did them all for me lol
 	}
 }
