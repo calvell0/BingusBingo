@@ -150,6 +150,16 @@ public class ChalArrayBag
 	}
 	
 	/*
+	 * MY OWN METHOD
+	 * Removes all emements of an array bag.
+	 */
+	public void removeAll()
+	{
+		manyItems = 0;
+		data = new String[INITIAL_CAPACITY];
+	}
+
+	/*
 	 * Returns how many items are in an array bag.
 	 */
 	public int size()

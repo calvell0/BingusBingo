@@ -11,9 +11,37 @@ import java.awt.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 //TODO LIST
-	//Add action listener for custom enabler 
-		//checkbox in the advanced options customizer menu.
-	//Add functionality to tip label in advanced options customizer menu.
+	//BUG: Array index out of bounds exception when enabling custom challenges
+		//after trying to add more than 20 and getting the error message.
+		//REPLICATION: Add 20 custom challenges in custom challenges options menu.
+			//Then click add challenge button at least one more time. You will
+			//be given an error message in the window that says you are not
+			//allowed to add more than 20 challenges. If you then click the
+			//Enable Custom Challenge box in either the main options window or the
+			//advanced custom challenge options window, the program will throw an
+			//array index out of bounds exception. Also, if you continue to enable
+			//and disable the enable custom challenge checkbox a couple more times,
+			//the challenge tally on the main options window will display ridiculously
+			//large numbers. Clicking and unclicking specific custom challenge boxes
+			//during this time also affects that number.
+		//THEORY: In the advMenuCustomizerAddButton's Action Listener there is a 
+			//try-catch block. This try block adds the text field's current string to
+			//the customChallenges ChalArrayBag. It then sets the next custEnablerButton
+			//to the text of this challenge, then makes that checkbox button visible.
+			//Only after doing this does it catch the ArrayIndexOutOfBounds Exception
+			//that is thrown when trying to add an additional button past the 
+			//custEnablerButton array's size of 20. Because the previous code is still
+			//executed in the try block, the challenge is still added to the customChallenges
+			//array bag. Therefore, when the enable custom challenges checkbox is clicked, 
+			//for each item in the customChallenges ChalArrayBag, the program tries to add 
+			//the text of the an enabler button to the posChals array bag. The problem is
+			//most likely that it tries to do this more than 20 times when the previously
+			//mentioned try-catch block adds more than 20 items, which causes this method
+			//to try referencing the enablerButtons array past its size of 20.
+		//TRY:
+			//In the action listeners for the custom check boxes, only add up to 20 items.
+		//SOLVED!!! THIS WORKED!
+	//Add remaining functionality to tip label in advanced options customizer menu.
 	//Add functionality to easy guarantees
 	//Add functionality to medium guarantees
 	//Add functionality to hard guarantees
@@ -214,6 +242,7 @@ public class Options
 	private JLabel advMenuCustomizerChalsTitle;
 	private JCheckBox advMenuCustomizerChalsCheckBox;
 	private JPanel advMenuCustomizerChalsListPanel;
+	private JButton advMenuCustomizerChalsClearButton;
 	private GridLayout advMenuCustomizerChalsListLayout;
 	private GroupLayout advMenuCustomizerLayout;
 	private GroupLayout advMenuCustomizerCenterLayout;
@@ -683,23 +712,60 @@ public class Options
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				if (customToggle.isSelected() == true)
+				{
+					advMenuCustomizerChalsCheckBox.setSelected(true);
+				}
+				else if (customToggle.isSelected() == false)
+				{
+					advMenuCustomizerChalsCheckBox.setSelected(false);
+				}
 				if (customOn == false)
 				{
-					posChals.addAll(customChallenges);
+					for (int i = 0; i < customChallenges.size() && i < 20; i++)
+					{
+						if (custEnablerButtons[i].isSelected() == true && !custEnablerButtons[i].getText().equals("x"))
+						{
+								posChals.add(custEnablerButtons[i].getText());
+						}
+					}
 					customOn = true;
-					optionsSeedMessage.setText("Enabled " + customChallenges.size() + " custom challenges.");
+					dispCustomCount = 0;
+					for (int p = 0; p < custEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(custEnablerButtons[p].getText()) > 0)
+						{
+							dispCustomCount++;
+						}
+					}
+					optionsSeedMessage.setText("Enabled " + dispCustomCount + " custom challenges.");
+					advMenuCustomizerTipLabel.setText("Enabled " + dispCustomCount + " custom challenges.");
+					dispCustomCount = 0;
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("customOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
 				}
 				else
 				{
-					for (int i = 0; i < customChallenges.size(); i++)
+					dispCustomCount = 0;
+					for (int p = 0; p < custEnablerButtons.length; p++)
 					{
-						posChals.remove(customChallenges.getData(i));
+						if (posChals.countOccurences(custEnablerButtons[p].getText()) > 0)
+						{
+							dispCustomCount++;
+						}
+					}
+					optionsSeedMessage.setText("Removed " + dispCustomCount + " custom challenges.");
+					advMenuCustomizerTipLabel.setText("Removed " + dispCustomCount + " custom challenges.");
+					dispCustomCount = 0;
+					for (int i = 0; i < customChallenges.size() && i < 20; i++)
+					{
+						if (custEnablerButtons[i].isSelected() == true && !custEnablerButtons[i].getText().equals("x"))
+						{
+								posChals.remove(custEnablerButtons[i].getText());
+						}
 					}
 					customOn = false;
-					optionsSeedMessage.setText("Disabled " + customChallenges.size() + " custom challenges.");
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
 					System.out.println("customOn set to: " + customOn);
 					System.out.println("# of Possible Challenges: " + posChals.size());
@@ -748,29 +814,39 @@ public class Options
 		optionsSeedConfirmButton = new JButton("Confirm Seed");
 		optionsSeedRandomButton = new JButton("Randomize Seed");
 		optionsSeedMessage = new JLabel(" ");
+		advMenuCustomizerTipLabel = new JLabel(" ");					//Declared here to avoid errors when changing this label's text before options menu is opened.
+		advMenuCustomizerChalsCheckBox = new JCheckBox("Enable Custom Challenges");	//Declared here to avoid errors when changing this boxes status before options menu is opened.
 		optionsSeedLog = new JLabel(" ");
 		GroupLayout seedLayout = new GroupLayout(optionsSeedPanel);
 		optionsSeedPanel.setLayout(seedLayout);
 		seedLayout.setAutoCreateGaps(true);
 		seedLayout.setAutoCreateContainerGaps(true);
-		seedLayout.setHorizontalGroup(
-				seedLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
-					.addComponent(optionsSeedTextField, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(seedLayout.createSequentialGroup()
-							.addComponent(optionsSeedRandomButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(optionsSeedConfirmButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addComponent(optionsSeedMessage)
-					.addComponent(optionsSeedLog)
-		);
-		seedLayout.setVerticalGroup(
-				seedLayout.createSequentialGroup()
-					.addComponent(optionsSeedTextField, 30, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGroup(seedLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)						
-							.addComponent(optionsSeedRandomButton) 														
-							.addComponent(optionsSeedConfirmButton))
-					.addComponent(optionsSeedMessage)
-					.addComponent(optionsSeedLog)
-		);
+		try
+		{
+			seedLayout.setHorizontalGroup(
+					seedLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+						.addComponent(optionsSeedTextField, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(seedLayout.createSequentialGroup()
+								.addComponent(optionsSeedRandomButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(optionsSeedConfirmButton, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(optionsSeedMessage)
+						.addComponent(optionsSeedLog)
+			);
+			seedLayout.setVerticalGroup(
+					seedLayout.createSequentialGroup()
+						.addComponent(optionsSeedTextField, 30, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(seedLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)						
+								.addComponent(optionsSeedRandomButton) 														
+								.addComponent(optionsSeedConfirmButton))
+						.addComponent(optionsSeedMessage)
+						.addComponent(optionsSeedLog)
+			);
+		}
+		catch (IllegalStateException f)
+		{
+			System.out.println("Caught that Jawn: Prevented IllegalStateException when initializing optionsSeedPanel layout.");
+		}
+
 
 		
 		
@@ -965,7 +1041,6 @@ public class Options
 		advMenuEnablerHardPanel = new JPanel();
 		advMenuEnablerHardPanel.setLayout(advMenuHardLayout);
 		openAdvancedHardEnablerMenu();
-			//CUSTOM SECTION
 			//FINISHING TOUCHES
 		advMenuEnablerLayout = new GroupLayout(advMenuEnablerPanel);
 		advMenuEnablerPanel.setLayout(advMenuEnablerLayout);
@@ -1000,21 +1075,21 @@ public class Options
 		//Creates and formats the CUSTOMIZER Menu Window
 		advMenuCustomizerMessagePanel = new JPanel();
 		advMenuCustomizerMessageLabel = new JLabel("Create a custom challenge and click confirm the confirm button" + 
-													"to add your challenge to the custom challenge pool.");
+													" to add up to 20 of your own challenges to the custom challenge pool.");
 		advMenuCustomizerMessagePanel.add(advMenuCustomizerMessageLabel, BorderLayout.CENTER);
 		advMenuCustomizerMessagePanel.setBackground(Color.CYAN);
 		advMenuCustomizerMessagePanel.setMinimumSize(new Dimension(1000,25));
 		advMenuCustomizerMessagePanel.setPreferredSize(new Dimension(1000,25));
 		advMenuCustomizerMessagePanel.setMaximumSize(new Dimension(1000,25));
 		advMenuCustomizerCenterPanel = new JPanel();
+		advMenuCustomizerTipLabel.setText(" ");
 		advMenuCustomizerEnterLabel = new JLabel("Enter a custom challenge: ");
 		advMenuCustomizerAddButton = new JButton("CONFIRM CHALLENGE");
-		advMenuCustomizerTipLabel = new JLabel("advMenuCustomizerTipLabel Placeholder Text");
 		advMenuCustomizerChalTextField = new JTextField("Your custom challenge");
 		advMenuCustomizerChalsPanel = new JPanel();
 		advMenuCustomizerChalsTopPanel = new JPanel();
 		advMenuCustomizerChalsTitle = new JLabel("Your Challenges: ");
-		advMenuCustomizerChalsCheckBox = new JCheckBox("Enable Custom Challenges");
+		advMenuCustomizerChalsClearButton = new JButton("Clear Custom Challenges");
 		advMenuCustomizerChalsListPanel = new JPanel();
 			//CENTER PANEL CONFIGURATION
 		advMenuCustomizerCenterLayout = new GroupLayout(advMenuCustomizerCenterPanel);
@@ -1046,14 +1121,14 @@ public class Options
 		advMenuCustomizerChalsTopLayout.setAutoCreateContainerGaps(true);
 		advMenuCustomizerChalsTopLayout.setHorizontalGroup(
 			advMenuCustomizerChalsTopLayout.createSequentialGroup()
-					.addComponent(advMenuCustomizerChalsTitle)
 					.addComponent(advMenuCustomizerChalsCheckBox)
+					.addComponent(advMenuCustomizerChalsTitle)
 		);
 		advMenuCustomizerChalsTopLayout.setVerticalGroup(
 			advMenuCustomizerChalsTopLayout.createSequentialGroup()
 					.addGroup(advMenuCustomizerChalsTopLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-							.addComponent(advMenuCustomizerChalsTitle)
-							.addComponent(advMenuCustomizerChalsCheckBox))
+						.addComponent(advMenuCustomizerChalsCheckBox)
+						.addComponent(advMenuCustomizerChalsTitle))
 		);
 			//CHALLENGES PANEL CONFIGURATION
 		advMenuCustomizerChalsListLayout = new GridLayout(5,4);
@@ -1068,12 +1143,14 @@ public class Options
 					.addComponent(advMenuCustomizerChalsTopPanel)
 					.addGroup(advMenuCustomizerChalsLayout.createSequentialGroup()
 						.addComponent(advMenuCustomizerChalsListPanel))
+					.addComponent(advMenuCustomizerChalsClearButton)
 		);
 		advMenuCustomizerChalsLayout.setVerticalGroup(
 			advMenuCustomizerChalsLayout.createSequentialGroup()
 					.addGroup(advMenuCustomizerChalsLayout.createParallelGroup()
 						.addComponent(advMenuCustomizerChalsTopPanel))
 					.addComponent(advMenuCustomizerChalsListPanel)
+					.addComponent(advMenuCustomizerChalsClearButton)
 		);
 			//FINISHING TOUCHES.
 		advMenuCustomizerLayout = new GroupLayout(advMenuCustomizerPanel);
@@ -1097,24 +1174,111 @@ public class Options
         {
         	public void actionPerformed(ActionEvent e)
         	{
-        			String chalString = advMenuCustomizerChalTextField.getText();
-					customChallenges.add(chalString);
-					custEnablerButtons[customChallenges.size() - 1].setText(chalString);
-					for (int i = 0; i < custEnablerButtons.length; i++)
+				try {
+					customChallenges.add(advMenuCustomizerChalTextField.getText());
+					custEnablerButtons[customChallenges.size() - 1].setText(advMenuCustomizerChalTextField.getText());
+					custEnablerButtons[customChallenges.size() - 1].setVisible(true);
+					advMenuCustomizerTipLabel.setText("Confirmed! Your challenge was added to the custom challenge pool." 
+															+ " Enable and disable it below.");
+					System.out.println("advMenuCustomizerAddButton Action Listener: customChallenges Size: " + customChallenges.size());
+				}
+				catch (ArrayIndexOutOfBoundsException q) {
+					System.out.println("advMenuCustomizerAddButton Action Listener: Successfully caught ArrayIndexOutOfBoundsException.");
+					advMenuCustomizerTipLabel.setText("------------------------------------"
+												 + "ERROR: You may only add up to 20 custom challenges. "
+												 + "Please clear your challenges to add more."
+												 + "------------------------------------");
+				}
+			}
+		});
+		this.advMenuCustomizerChalsCheckBox.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (advMenuCustomizerChalsCheckBox.isSelected() == true)
+				{
+					customToggle.setSelected(true);
+				}
+				else if (advMenuCustomizerChalsCheckBox.isSelected() == false)
+				{
+					customToggle.setSelected(false);
+				}
+				if (customOn == false)
+				{
+					for (int i = 0; i < customChallenges.size() && i < 20; i++)
 					{
-						if (custEnablerButtons[i].getText().equals("x"))
+						if (custEnablerButtons[i].isSelected() == true && !custEnablerButtons[i].getText().equals("x"))
 						{
-							custEnablerButtons[i].setVisible(false);
-						}
-						else
-						{
-							custEnablerButtons[i].setVisible(true);
+								posChals.add(custEnablerButtons[i].getText());
 						}
 					}
-					advMenuCustomizerTipLabel.setText("Confirmed! Your challenge was added to the custom challenge pool.");
-        	}
-        });
+					customOn = true;
+					dispCustomCount = 0;
+					for (int p = 0; p < custEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(custEnablerButtons[p].getText()) > 0)
+						{
+							dispCustomCount++;
+						}
+					}
+					optionsSeedMessage.setText("Enabled " + dispCustomCount + " custom challenges.");
+					advMenuCustomizerTipLabel.setText("Enabled " + dispCustomCount + " custom challenges.");
+					dispCustomCount = 0;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("customOn set to: " + customOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+				else
+				{
+					dispCustomCount = 0;
+					for (int p = 0; p < custEnablerButtons.length; p++)
+					{
+						if (posChals.countOccurences(custEnablerButtons[p].getText()) > 0)
+						{
+							dispCustomCount++;
+						}
+					}
+					optionsSeedMessage.setText("Removed " + dispCustomCount + " custom challenges.");
+					advMenuCustomizerTipLabel.setText("Removed " + dispCustomCount + " custom challenges.");
+					dispCustomCount = 0;
+					for (int i = 0; i < customChallenges.size() && i < 20; i++)
+					{
+						if (custEnablerButtons[i].isSelected() == true && !custEnablerButtons[i].getText().equals("x"))
+						{
+								posChals.remove(custEnablerButtons[i].getText());
+						}
+					}
+					customOn = false;
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+					System.out.println("customOn set to: " + customOn);
+					System.out.println("# of Possible Challenges: " + posChals.size());
+				}
+			}
+		});
+		this.advMenuCustomizerChalsClearButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				for (int i = 0; i < customChallenges.size() && i < 20; i++)
+				{
+					posChals.remove(custEnablerButtons[i].getText());
+				}
+				for (int i = 0; i < custEnablerButtons.length; i++)
+				{
+					custEnablerButtons[i].setText("x");
+					custEnablerButtons[i].setVisible(false);
+				}
+				customChallenges.removeAll();
+				chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+				optionsSeedMessage.setText("Custom challenges cleared.");
+				advMenuCustomizerTipLabel.setText("Custom challenges cleared.");
+				System.out.println("advMenuCustomizerChalsClearButton Action Listener: " 
+							+ "Attempted to remove all items from customChallenges ChalArrayBag. \n\t"
+							+ "Current size of customChallenges ChalArrayBag: " + customChallenges.size());
+			}
+		});
 	}
+	////////////////////////////////////////////////////////////////////////////////////END OF CUSTOMIZER MENU CODE////////////////////////////////////////////////////
 
 	public void addEnablerMenuTopPanelActionListeners()
 	{
@@ -1316,10 +1480,11 @@ public class Options
 
 		for (int i = 0; i < custEnablerButtons.length; i++)
 			{
-				System.out.println("[" + custEnablerButtons[i].getText() + "]");
-				custEnablerButtons[i].setVisible(false);
+				// System.out.println("[" + custEnablerButtons[i].getText() + "]");
+				custEnablerButtons[i].setVisible(true);
 				if (custEnablerButtons[i].getText().equals("x"))
 				{
+					// System.out.println("Customizer button was added, but was equal to 'x'. Setting Invisible.");
 					custEnablerButtons[i].setVisible(false);
 				}
 				else
@@ -1327,7 +1492,6 @@ public class Options
 					custEnablerButtons[i].setVisible(true);
 				}
 			}
-		//advMenuFrame.pack();
 
 
 		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
@@ -1345,6 +1509,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
 					}
 					if (c1.isSelected() == false)
 					{
@@ -1356,6 +1521,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
 					}
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
@@ -1374,6 +1540,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
 					}
 					if (c2.isSelected() == false)
 					{
@@ -1385,6 +1552,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
 					}
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
@@ -1403,6 +1571,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
 					}
 					if (c3.isSelected() == false)
 					{
@@ -1414,6 +1583,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
 					}
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
@@ -1432,6 +1602,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
 					}
 					if (c4.isSelected() == false)
 					{
@@ -1443,6 +1614,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
 					}
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
@@ -1461,6 +1633,7 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
 					}
 					if (c5.isSelected() == false)
 					{
@@ -1472,6 +1645,472 @@ public class Options
 							}
 						}
 						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c6.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c6.isSelected() == true)
+					{
+						if (posChals.countOccurences(c6.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c6.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c6.isSelected() == false)
+					{
+						if (posChals.countOccurences(c6.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c6.getText()); b++)
+							{
+								posChals.remove(c6.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c7.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c7.isSelected() == true)
+					{
+						if (posChals.countOccurences(c7.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c7.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c7.isSelected() == false)
+					{
+						if (posChals.countOccurences(c7.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c7.getText()); b++)
+							{
+								posChals.remove(c7.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c8.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c8.isSelected() == true)
+					{
+						if (posChals.countOccurences(c8.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c8.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c8.isSelected() == false)
+					{
+						if (posChals.countOccurences(c8.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c8.getText()); b++)
+							{
+								posChals.remove(c8.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c9.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c9.isSelected() == true)
+					{
+						if (posChals.countOccurences(c9.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c9.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c9.isSelected() == false)
+					{
+						if (posChals.countOccurences(c9.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c9.getText()); b++)
+							{
+								posChals.remove(c9.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c10.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c10.isSelected() == true)
+					{
+						if (posChals.countOccurences(c10.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c10.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c10.isSelected() == false)
+					{
+						if (posChals.countOccurences(c10.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c10.getText()); b++)
+							{
+								posChals.remove(c10.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c11.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c11.isSelected() == true)
+					{
+						if (posChals.countOccurences(c11.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c11.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c11.isSelected() == false)
+					{
+						if (posChals.countOccurences(c11.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c11.getText()); b++)
+							{
+								posChals.remove(c11.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c12.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c12.isSelected() == true)
+					{
+						if (posChals.countOccurences(c12.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c12.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c12.isSelected() == false)
+					{
+						if (posChals.countOccurences(c12.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c12.getText()); b++)
+							{
+								posChals.remove(c12.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c13.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c13.isSelected() == true)
+					{
+						if (posChals.countOccurences(c13.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c13.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c13.isSelected() == false)
+					{
+						if (posChals.countOccurences(c13.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c13.getText()); b++)
+							{
+								posChals.remove(c13.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c14.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c14.isSelected() == true)
+					{
+						if (posChals.countOccurences(c14.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c14.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c14.isSelected() == false)
+					{
+						if (posChals.countOccurences(c14.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c14.getText()); b++)
+							{
+								posChals.remove(c14.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c15.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c15.isSelected() == true)
+					{
+						if (posChals.countOccurences(c15.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c15.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c15.isSelected() == false)
+					{
+						if (posChals.countOccurences(c15.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c15.getText()); b++)
+							{
+								posChals.remove(c15.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c16.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c16.isSelected() == true)
+					{
+						if (posChals.countOccurences(c16.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c16.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c16.isSelected() == false)
+					{
+						if (posChals.countOccurences(c16.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c16.getText()); b++)
+							{
+								posChals.remove(c16.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c17.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c17.isSelected() == true)
+					{
+						if (posChals.countOccurences(c17.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c17.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c17.isSelected() == false)
+					{
+						if (posChals.countOccurences(c17.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c17.getText()); b++)
+							{
+								posChals.remove(c17.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c18.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c18.isSelected() == true)
+					{
+						if (posChals.countOccurences(c18.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c18.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c18.isSelected() == false)
+					{
+						if (posChals.countOccurences(c18.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c18.getText()); b++)
+							{
+								posChals.remove(c18.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c19.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c19.isSelected() == true)
+					{
+						if (posChals.countOccurences(c19.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c19.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c19.isSelected() == false)
+					{
+						if (posChals.countOccurences(c19.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c19.getText()); b++)
+							{
+								posChals.remove(c19.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c20.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c20.isSelected() == true)
+					{
+						if (posChals.countOccurences(c20.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c20.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c20.isSelected() == false)
+					{
+						if (posChals.countOccurences(c20.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c20.getText()); b++)
+							{
+								posChals.remove(c20.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+						advMenuCustomizerTipLabel.setText("Removed an item from CUSTOM challenge pool.");
 					}
 					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
          	   }
