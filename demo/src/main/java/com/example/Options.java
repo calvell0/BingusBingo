@@ -11,27 +11,9 @@ import java.awt.*;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 //TODO LIST
-	//Reformat enabler menu: Instead of a menu for each
-		//difficulty, place all challenges directly into
-		//the enable/disable menu, with a JLabel header
-		//showing the difficulty, and the corresponding
-		//challenges below it.
-		//STEPS:
-			//Disable the easyMenu and others. They are JMenuItems.
-			//Reroute all changes and additions to these (if any)
-				//to the Enable/Disable Menu. 
-					//IMPORTANT: YOU WILL
-					//WANT TO REPLACE THE JMENU ENTIRELY!
-					//USE JTABBEDPANE INSTEAD OF JMENU!!!
-			//Add JLabels as Headers for difficulty. Probably
-				//involves making additional GridLayouts or
-				//JPanels. You will most likely want to do
-				//this by setting the Menu's layout to GridLayout,
-				//or GroupLayout, then adding GridLayouts into the panel.
-				//Each will have a JLabel for Difficulty and 20 JCheckBoxes.
-			//Add a JLabel to the top of the Enabler/Disabler menu
-				//explaining instructions to user.
-	//Add functionality to custom enablers
+	//Add action listener for custom enabler 
+		//checkbox in the advanced options customizer menu.
+	//Add functionality to tip label in advanced options customizer menu.
 	//Add functionality to easy guarantees
 	//Add functionality to medium guarantees
 	//Add functionality to hard guarantees
@@ -190,6 +172,7 @@ public class Options
 	private JTabbedPane advMenuTabbedPane;
 	private JPanel advMenuEnablerPanel;
 	private JPanel advMenuGuaranteePanel;
+	private JPanel advMenuCustomizerPanel;
 	private GridLayout advMenuEasyLayout;
 	private GridLayout advMenuMedLayout;
 	private GridLayout advMenuHardLayout;
@@ -218,6 +201,24 @@ public class Options
 	private JPanel advMenuEnablerMedPanel;
 	private JPanel advMenuEnablerHardPanel;
 	private JPanel advMenuEnablerCustPanel;
+		//Customizer Menu Window
+	private JPanel advMenuCustomizerMessagePanel;
+	private JLabel advMenuCustomizerMessageLabel;
+	private JPanel advMenuCustomizerCenterPanel;
+	private JLabel advMenuCustomizerEnterLabel;
+	private JTextField advMenuCustomizerChalTextField;
+	private JButton advMenuCustomizerAddButton;
+	private JLabel advMenuCustomizerTipLabel;
+	private JPanel advMenuCustomizerChalsPanel;
+	private JPanel advMenuCustomizerChalsTopPanel;
+	private JLabel advMenuCustomizerChalsTitle;
+	private JCheckBox advMenuCustomizerChalsCheckBox;
+	private JPanel advMenuCustomizerChalsListPanel;
+	private GridLayout advMenuCustomizerChalsListLayout;
+	private GroupLayout advMenuCustomizerLayout;
+	private GroupLayout advMenuCustomizerCenterLayout;
+	private GroupLayout advMenuCustomizerChalsTopLayout;
+	private GroupLayout advMenuCustomizerChalsLayout;
 
 	// easyMenu button declarations
 	private JCheckBox e1;
@@ -416,6 +417,37 @@ public class Options
 		for (int q = 0; q < hardEnablerButtons.length; q++)
 		{
 			hardEnablerButtons[q].setSelected(true);
+		}
+
+		//Initialize Customizer menu buttons, add them to
+		//JCheckBox array custEnablerButtons, the set them all
+		//to true by default on program startup.
+		c1 = new JCheckBox("x");
+        c2 = new JCheckBox("x");
+        c3 = new JCheckBox("x");
+        c4 = new JCheckBox("x");
+        c5 = new JCheckBox("x");
+        c6 = new JCheckBox("x");
+        c7 = new JCheckBox("x");
+        c8 = new JCheckBox("x");
+        c9 = new JCheckBox("x");
+        c10 = new JCheckBox("x");
+        c11 = new JCheckBox("x");
+        c12 = new JCheckBox("x");
+        c13 = new JCheckBox("x");
+        c14 = new JCheckBox("x");
+        c15 = new JCheckBox("x");
+        c16 = new JCheckBox("x");
+        c17 = new JCheckBox("x");
+        c18 = new JCheckBox("x");
+        c19 = new JCheckBox("x");
+        c20 = new JCheckBox("x");
+		custEnablerButtons = new JCheckBox[] {
+			c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, 
+			c15, c16, c17, c18, c19, c20};
+		for (int q = 0; q < custEnablerButtons.length; q++)
+		{
+			custEnablerButtons[q].setSelected(true);
 		}
 
 		//OPTIONS frame
@@ -739,6 +771,8 @@ public class Options
 					.addComponent(optionsSeedMessage)
 					.addComponent(optionsSeedLog)
 		);
+
+		
 		
 		this.optionsSeedConfirmButton.addActionListener(new ActionListener()
         {
@@ -829,17 +863,19 @@ public class Options
 		advMenuFrame.add(advMenuTabbedPane);
 		advMenuEnablerPanel = new JPanel();
 		advMenuGuaranteePanel = new JPanel();
+		advMenuCustomizerPanel = new JPanel();
 		advMenuTabbedPane.add("[ENABLE/DISABLE CHALLENGES]", advMenuEnablerPanel);
 		advMenuTabbedPane.add("[GUARANTEE CHALLENGES]", advMenuGuaranteePanel);
+		advMenuTabbedPane.add("[CUSTOM CHALLENGES]", advMenuCustomizerPanel);
 		advMenuFrame.setSize(1000,1000);
 		advMenuFrame.setLocation(100,100);
         advMenuFrame.setVisible(true);
+
+		//Creates and formats the Enabler/Disabler Menu Window
 		advMenuEasyLayout = new GridLayout(5, 4);
 		advMenuMedLayout = new GridLayout(5, 4);
 		advMenuHardLayout = new GridLayout(5, 4);
 		advMenuCustLayout = new GridLayout(5, 4);
-
-		//Creates and formats the Enabler/Disabler Menu Window
 		advMenuEnablerMessagePanel = new JPanel();
 		advMenuEnablerMessage = new JLabel("Select Challenges to add or remove them" + 
 											" from their respective challenge pools.");
@@ -960,6 +996,124 @@ public class Options
 		);
 		addEnablerMenuTopPanelActionListeners();
 		advMenuFrame.pack();
+
+		//Creates and formats the CUSTOMIZER Menu Window
+		advMenuCustomizerMessagePanel = new JPanel();
+		advMenuCustomizerMessageLabel = new JLabel("Create a custom challenge and click confirm the confirm button" + 
+													"to add your challenge to the custom challenge pool.");
+		advMenuCustomizerMessagePanel.add(advMenuCustomizerMessageLabel, BorderLayout.CENTER);
+		advMenuCustomizerMessagePanel.setBackground(Color.CYAN);
+		advMenuCustomizerMessagePanel.setMinimumSize(new Dimension(1000,25));
+		advMenuCustomizerMessagePanel.setPreferredSize(new Dimension(1000,25));
+		advMenuCustomizerMessagePanel.setMaximumSize(new Dimension(1000,25));
+		advMenuCustomizerCenterPanel = new JPanel();
+		advMenuCustomizerEnterLabel = new JLabel("Enter a custom challenge: ");
+		advMenuCustomizerAddButton = new JButton("CONFIRM CHALLENGE");
+		advMenuCustomizerTipLabel = new JLabel("advMenuCustomizerTipLabel Placeholder Text");
+		advMenuCustomizerChalTextField = new JTextField("Your custom challenge");
+		advMenuCustomizerChalsPanel = new JPanel();
+		advMenuCustomizerChalsTopPanel = new JPanel();
+		advMenuCustomizerChalsTitle = new JLabel("Your Challenges: ");
+		advMenuCustomizerChalsCheckBox = new JCheckBox("Enable Custom Challenges");
+		advMenuCustomizerChalsListPanel = new JPanel();
+			//CENTER PANEL CONFIGURATION
+		advMenuCustomizerCenterLayout = new GroupLayout(advMenuCustomizerCenterPanel);
+		advMenuCustomizerCenterPanel.setLayout(advMenuCustomizerCenterLayout);
+		advMenuCustomizerCenterLayout.setAutoCreateGaps(true);
+		advMenuCustomizerCenterLayout.setAutoCreateContainerGaps(true);
+		advMenuCustomizerCenterLayout.setHorizontalGroup(
+			advMenuCustomizerCenterLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+					.addComponent(advMenuCustomizerEnterLabel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(advMenuCustomizerCenterLayout.createSequentialGroup()
+							.addComponent(advMenuCustomizerChalTextField, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(advMenuCustomizerAddButton, 0, 250, 250))
+					.addComponent(advMenuCustomizerTipLabel)
+					.addComponent(advMenuCustomizerChalsPanel)
+		);
+		advMenuCustomizerCenterLayout.setVerticalGroup(
+			advMenuCustomizerCenterLayout.createSequentialGroup()
+					.addComponent(advMenuCustomizerEnterLabel)
+					.addGroup(advMenuCustomizerCenterLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+							.addComponent(advMenuCustomizerChalTextField, 0, 40, 40)
+							.addComponent(advMenuCustomizerAddButton, 0, 40, 40))
+					.addComponent(advMenuCustomizerTipLabel)
+					.addComponent(advMenuCustomizerChalsPanel)
+		);
+			//CHALLENGES TOP PANEL CONFIGURATION
+		advMenuCustomizerChalsTopLayout = new GroupLayout(advMenuCustomizerChalsTopPanel);
+		advMenuCustomizerChalsTopPanel.setLayout(advMenuCustomizerChalsTopLayout);
+		advMenuCustomizerChalsTopLayout.setAutoCreateGaps(true);
+		advMenuCustomizerChalsTopLayout.setAutoCreateContainerGaps(true);
+		advMenuCustomizerChalsTopLayout.setHorizontalGroup(
+			advMenuCustomizerChalsTopLayout.createSequentialGroup()
+					.addComponent(advMenuCustomizerChalsTitle)
+					.addComponent(advMenuCustomizerChalsCheckBox)
+		);
+		advMenuCustomizerChalsTopLayout.setVerticalGroup(
+			advMenuCustomizerChalsTopLayout.createSequentialGroup()
+					.addGroup(advMenuCustomizerChalsTopLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(advMenuCustomizerChalsTitle)
+							.addComponent(advMenuCustomizerChalsCheckBox))
+		);
+			//CHALLENGES PANEL CONFIGURATION
+		advMenuCustomizerChalsListLayout = new GridLayout(5,4);
+		advMenuCustomizerChalsListPanel.setLayout(advMenuCustomizerChalsListLayout);
+		openAdvancedCustEnablerMenu();
+		advMenuCustomizerChalsLayout = new GroupLayout(advMenuCustomizerChalsPanel);
+		advMenuCustomizerChalsPanel.setLayout(advMenuCustomizerChalsLayout);
+		advMenuCustomizerChalsLayout.setAutoCreateGaps(true);
+		advMenuCustomizerChalsLayout.setAutoCreateContainerGaps(true);
+		advMenuCustomizerChalsLayout.setHorizontalGroup(
+			advMenuCustomizerChalsLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+					.addComponent(advMenuCustomizerChalsTopPanel)
+					.addGroup(advMenuCustomizerChalsLayout.createSequentialGroup()
+						.addComponent(advMenuCustomizerChalsListPanel))
+		);
+		advMenuCustomizerChalsLayout.setVerticalGroup(
+			advMenuCustomizerChalsLayout.createSequentialGroup()
+					.addGroup(advMenuCustomizerChalsLayout.createParallelGroup()
+						.addComponent(advMenuCustomizerChalsTopPanel))
+					.addComponent(advMenuCustomizerChalsListPanel)
+		);
+			//FINISHING TOUCHES.
+		advMenuCustomizerLayout = new GroupLayout(advMenuCustomizerPanel);
+		advMenuCustomizerPanel.setLayout(advMenuCustomizerLayout);
+		advMenuCustomizerLayout.setAutoCreateGaps(true);
+		advMenuCustomizerLayout.setAutoCreateContainerGaps(true);
+		advMenuCustomizerLayout.setHorizontalGroup(
+			advMenuCustomizerLayout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+					.addComponent(advMenuCustomizerMessagePanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(advMenuCustomizerCenterPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		);
+		advMenuCustomizerLayout.setVerticalGroup(
+			advMenuCustomizerLayout.createSequentialGroup()
+					.addComponent(advMenuCustomizerMessagePanel)
+					.addComponent(advMenuCustomizerCenterPanel)
+		);
+		advMenuFrame.pack();
+
+		//ACTION LISTENERS
+		this.advMenuCustomizerAddButton.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        			String chalString = advMenuCustomizerChalTextField.getText();
+					customChallenges.add(chalString);
+					custEnablerButtons[customChallenges.size() - 1].setText(chalString);
+					for (int i = 0; i < custEnablerButtons.length; i++)
+					{
+						if (custEnablerButtons[i].getText().equals("x"))
+						{
+							custEnablerButtons[i].setVisible(false);
+						}
+						else
+						{
+							custEnablerButtons[i].setVisible(true);
+						}
+					}
+					advMenuCustomizerTipLabel.setText("Confirmed! Your challenge was added to the custom challenge pool.");
+        	}
+        });
 	}
 
 	public void addEnablerMenuTopPanelActionListeners()
@@ -1137,6 +1291,194 @@ public class Options
 			}
 		});
 	}
+
+	public void openAdvancedCustEnablerMenu()
+	{   advMenuCustomizerChalsListPanel.add(c1);
+        advMenuCustomizerChalsListPanel.add(c2);
+        advMenuCustomizerChalsListPanel.add(c3);
+        advMenuCustomizerChalsListPanel.add(c4);
+        advMenuCustomizerChalsListPanel.add(c5);
+        advMenuCustomizerChalsListPanel.add(c6);
+        advMenuCustomizerChalsListPanel.add(c7);
+        advMenuCustomizerChalsListPanel.add(c8);
+        advMenuCustomizerChalsListPanel.add(c9);
+        advMenuCustomizerChalsListPanel.add(c10);
+        advMenuCustomizerChalsListPanel.add(c11);
+        advMenuCustomizerChalsListPanel.add(c12);
+        advMenuCustomizerChalsListPanel.add(c13);
+        advMenuCustomizerChalsListPanel.add(c14);
+        advMenuCustomizerChalsListPanel.add(c15);
+        advMenuCustomizerChalsListPanel.add(c16);
+        advMenuCustomizerChalsListPanel.add(c17);
+        advMenuCustomizerChalsListPanel.add(c18);
+        advMenuCustomizerChalsListPanel.add(c19);
+        advMenuCustomizerChalsListPanel.add(c20);
+
+		for (int i = 0; i < custEnablerButtons.length; i++)
+			{
+				System.out.println("[" + custEnablerButtons[i].getText() + "]");
+				custEnablerButtons[i].setVisible(false);
+				if (custEnablerButtons[i].getText().equals("x"))
+				{
+					custEnablerButtons[i].setVisible(false);
+				}
+				else
+				{
+					custEnablerButtons[i].setVisible(true);
+				}
+			}
+		//advMenuFrame.pack();
+
+
+		//PAINPAINPAINPAINPAINPAINPAINPAINPAINPAINPIANOPAINPAINPAIN
+		c1.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c1.isSelected() == true)
+					{
+						if (posChals.countOccurences(c5.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c5.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c1.isSelected() == false)
+					{
+						if (posChals.countOccurences(c1.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c1.getText()); b++)
+							{
+								posChals.remove(c1.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c2.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c2.isSelected() == true)
+					{
+						if (posChals.countOccurences(c2.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c2.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c2.isSelected() == false)
+					{
+						if (posChals.countOccurences(c2.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c2.getText()); b++)
+							{
+								posChals.remove(c2.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c3.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c3.isSelected() == true)
+					{
+						if (posChals.countOccurences(c3.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c3.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c3.isSelected() == false)
+					{
+						if (posChals.countOccurences(c3.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c3.getText()); b++)
+							{
+								posChals.remove(c3.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c4.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c4.isSelected() == true)
+					{
+						if (posChals.countOccurences(c4.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c4.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c4.isSelected() == false)
+					{
+						if (posChals.countOccurences(c4.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c4.getText()); b++)
+							{
+								posChals.remove(c4.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+		c5.addActionListener(new ActionListener()
+       	   	 {
+        		public void actionPerformed(ActionEvent e)
+        		{
+        			if (c5.isSelected() == true)
+					{
+						if (posChals.countOccurences(c5.getText()) == 0)
+						{
+							if (customToggle.isSelected() == true)
+							{
+								posChals.add(c5.getText());
+							}
+						}
+						optionsSeedMessage.setText("Added an item to CUSTOM challenge pool.");
+					}
+					if (c5.isSelected() == false)
+					{
+						if (posChals.countOccurences(c5.getText()) > 0)
+						{
+							for (int b = 0; b < posChals.countOccurences(c5.getText()); b++)
+							{
+								posChals.remove(c5.getText());
+							}
+						}
+						optionsSeedMessage.setText("Removed an item from CUSTOM challenge pool.");
+					}
+					chalTally.setText("(Challenges Enabled: " + posChals.size() + ")");
+         	   }
+       	});
+	}
+
+	
 
 	public void openAdvancedEasyEnablerMenu()
 	{
@@ -1787,7 +2129,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[0]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m1.isSelected() == false)
 					{
@@ -1816,7 +2158,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[1]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m2.isSelected() == false)
 					{
@@ -1845,7 +2187,7 @@ public void actionPerformed(ActionEvent e)
 						posChals.add(medChallenges[2]);
 					}
 				}
-				optionsSeedMessage.setText("Added an item to med challenge pool.");
+				optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 			}
 			if (m3.isSelected() == false)
 			{
@@ -1874,7 +2216,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[3]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m4.isSelected() == false)
 					{
@@ -1903,7 +2245,7 @@ public void actionPerformed(ActionEvent e)
 						posChals.add(medChallenges[4]);
 					}
 				}
-				optionsSeedMessage.setText("Added an item to med challenge pool.");
+				optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 			}
 			if (m5.isSelected() == false)
 			{
@@ -1932,7 +2274,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[5]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m6.isSelected() == false)
 					{
@@ -1961,7 +2303,7 @@ public void actionPerformed(ActionEvent e)
 						posChals.add(medChallenges[6]);
 					}
 				}
-				optionsSeedMessage.setText("Added an item to med challenge pool.");
+				optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 			}
 			if (m7.isSelected() == false)
 			{
@@ -1990,7 +2332,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[7]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m8.isSelected() == false)
 					{
@@ -2019,7 +2361,7 @@ public void actionPerformed(ActionEvent e)
 						posChals.add(medChallenges[8]);
 					}
 				}
-				optionsSeedMessage.setText("Added an item to med challenge pool.");
+				optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 			}
 			if (m9.isSelected() == false)
 			{
@@ -2048,7 +2390,7 @@ public void actionPerformed(ActionEvent e)
 				posChals.add(medChallenges[9]);
 			}
 		}
-		optionsSeedMessage.setText("Added an item to med challenge pool.");
+		optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 	}
 	if (m10.isSelected() == false)
 	{
@@ -2077,7 +2419,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[10]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m11.isSelected() == false)
 					{
@@ -2106,7 +2448,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[11]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m12.isSelected() == false)
 					{
@@ -2135,7 +2477,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[12]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m13.isSelected() == false)
 					{
@@ -2164,7 +2506,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[13]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m14.isSelected() == false)
 					{
@@ -2193,7 +2535,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[14]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m15.isSelected() == false)
 					{
@@ -2222,7 +2564,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[15]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m16.isSelected() == false)
 					{
@@ -2251,7 +2593,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[16]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m17.isSelected() == false)
 					{
@@ -2280,7 +2622,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[17]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m18.isSelected() == false)
 					{
@@ -2309,7 +2651,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[18]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m19.isSelected() == false)
 					{
@@ -2338,7 +2680,7 @@ public void actionPerformed(ActionEvent e)
 								posChals.add(medChallenges[19]);
 							}
 						}
-						optionsSeedMessage.setText("Added an item to med challenge pool.");
+						optionsSeedMessage.setText("Added an item to MEDIUM challenge pool.");
 					}
 					if (m20.isSelected() == false)
 					{
